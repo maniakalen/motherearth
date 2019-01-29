@@ -26,10 +26,9 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'index', 'map', 'login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -72,7 +71,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+    	$this->layout = 'index';
         return $this->render('index');
+    }
+
+    public function actionMap()
+    {
+    	\Yii::$app->location->getGeoUnitCoords('София');
+        return $this->render('map');
     }
 
     /**
@@ -82,6 +88,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+	    $this->layout = 'index';
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -150,6 +157,7 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+    	$this->layout = 'index';
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {

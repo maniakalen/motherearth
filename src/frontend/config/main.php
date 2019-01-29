@@ -7,9 +7,16 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+	'modules' => [
+		'maps' => 'maniakalen\maps\Module'
+	],
+    'bootstrap' => ['log', 'maps'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+    	'location' => [
+    		'class' => 'maniakalen\maps\components\Location',
+		    'key' => 'e19e445dea36de'
+	    ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],
@@ -34,14 +41,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+	        'class' => 'yii\web\UrlManager',
+	        'enablePrettyUrl' => true,
+	        'showScriptName' => false,
+	        'suffix' => '.html',
             'rules' => [
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];

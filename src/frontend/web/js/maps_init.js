@@ -7,6 +7,21 @@ $(document).ready(function() {
         id: 'mapbox.streets',
         accessToken: 'pk.eyJ1IjoibWFuaWFrYWxlbiIsImEiOiJjanI2ZjJnNWwwOHA2NDluamVrN3lhdG81In0.YASdNSL-lEnFojai4C96kw'
     }).addTo(window.map);
-    var myIcon = L.divIcon({className: 'my-div-icon', html: '<img class="my-div-icon" src="./img/logo_small.jpg" width="26" height="26" />'});
-    L.marker([42.699091, 23.322258], {icon: myIcon}).addTo(window.map);
+    var popup = L.popup({closeButton:false})
+        .setLatLng([42.699091, 23.322258])
+        .setContent('<img class="my-map-icon" src="./img/photo1.jpg" width="45" height="45" />')
+        .openOn(map);
+    var popup1 = L.popup({closeButton:false})
+        .setLatLng([42.699091, 24.322258])
+        .setContent('<img class="my-map-icon" src="./img/photo2.jpg" width="45" height="45" />');
+    var popup2 = L.popup({closeButton:false})
+        .setLatLng([42.699091, 25.322258])
+        .setContent('<img class="my-map-icon" src="./img/photo3.jpg" width="45" height="45" />');
+
+    map.addLayer(popup1).addLayer(popup2);
+    // var popup = L.popup({closeButton:false})
+    //     .setLatLng([42.799191, 23.622158])
+    //     .setContent('<img class="my-map-icon" src="./img/logo_small.jpg" width="45" height="45" />')
+    //     .openOn(map);
+    //L.marker([42.699091, 23.322258], {icon: myIcon}).addTo(window.map);
 });

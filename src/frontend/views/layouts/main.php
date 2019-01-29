@@ -21,6 +21,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <base href="/" />
     <?php $this->head() ?>
 </head>
 <body class="">
@@ -28,10 +29,41 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-        echo $this->render('/partials/header');
+        //echo $this->render('/partials/header');
     ?>
-
-    <div class="my-container body-background">
+	<?php
+	NavBar::begin([
+		'brandLabel' => Yii::$app->name,
+		'brandUrl' => Yii::$app->homeUrl,
+		'options' => [
+			'class' => 'navbar-inverse navbar-fixed-top',
+		],
+        'innerContainerOptions' => [
+                'class' => 'some-class'
+        ]
+	]);
+	$menuItems = [
+		['label' => 'Home', 'url' => ['/site/index']],
+	];
+	if (Yii::$app->user->isGuest) {
+		$menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+	} else {
+		$menuItems[] = '<li>'
+		               . Html::beginForm(['/site/logout'], 'post')
+		               . Html::submitButton(
+				'Logout (' . Yii::$app->user->identity->username . ')',
+				['class' => 'btn btn-link logout']
+			)
+		               . Html::endForm()
+		               . '</li>';
+	}
+	echo Nav::widget([
+		'options' => ['class' => 'navbar-nav navbar-right'],
+		'items' => $menuItems,
+	]);
+	NavBar::end();
+	?>
+    <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

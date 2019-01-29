@@ -466,10 +466,12 @@
 .leaflet-popup-content-wrapper {
     padding: 1px;
     text-align: left;
-    border-radius: 12px;
+    border-radius: 25px;
+    border: solid black 1px;
+
 }
 .leaflet-popup-content {
-    margin: 13px 19px;
+    width: 100% !important;
     line-height: 1.4;
 }
 .leaflet-popup-content p {

@@ -5,30 +5,35 @@ body {
 .wrap {
     height: 100%;
 }
-.wrap .my-container {
-    height: calc(100% - 150px);
+.wrap .container {
+    height: 100%;
     width: 100%;
+    padding: 0;
+    margin: 0;
 }
-.gradiend-background-header {
+.graddiend-background-header {
     background: url("../img/vegetables.jpg");
 }
 .header {
-    height: 140px;
+    height: 50px;
     padding-top: 5px;
-    border-bottom: solid black 4px;
+    border-bottom: solid black 1px;
 }
 
-.header > .logo {
+.logo {
     background-image: url('../img/logo_small.jpg');
-    background-position-x: 11px;
+    background-position-x: 12px;
     background-position-y: 5px;
     width: 120px;
     height: 120px;
-    border: black 2px solid;
+    border: black 1px solid;
     border-radius: 60px;
-    margin: 5px 0 0 45px
+    margin: 5px 0;
+    display: block;
 }
-
+.buttons div:first-child {
+    border: none !important;
+}
 .body-background {
     background-image: linear-gradient(#147a00, #311903);
 
@@ -38,14 +43,68 @@ body {
     height: 100%;
 
 }
+.site-index .btn-link {
+    color: #10436f;
+}
+.container {
+    background: url("../img/background.png");
+}
+.site-index {
+    background: radial-gradient(circle at 50%, rgba(255, 255, 255, 0.6), rgba(189, 252, 208, 0.5) 80%, rgba(177, 255, 231, 0) 150%);
+}
+.btn-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+.site-index > .content {
+    width: 800px;
+    left: 50%;
+    margin-left: -400px;
+    position: absolute;
+    text-align: right;
+    height: 500px;
+    top: 50%;
+    margin-top: -250px;
+    overflow: hidden;
+}
+.site-index > .content p {
+    line-height: 14px;
+    font-size: 11px;
+    font-family: Helvetica, sans-serif;
+}
+.site-index .content .text {
+    padding: 5px 15px;
+    border-right: solid 1px #CCCCCC;
+}
+.site-index .content .buttons {
+    padding-top: 150px;
+}
+.text-content {
+    font-weight: 700;
+}
+.site-index .content .buttons div {
+    border-bottom: solid 1px #CCCCCC;
+    padding: 5px 10px;
+    width: 140px;
+    text-align: left;
+}
 
+.site-index .content .buttons div a {
+    text-decoration: none;
+    cursor: pointer;
+}
 #map {
     width: 100%;
     height: 100%;
 }
 
-.my-div-icon {
-    border-radius: 15px;
+.my-map-icon {
+    border-radius: 25px;
+}
+
+@media(max-height:767px) {
+    .container {
+        background: url("../img/background.png") 0 -200px;
+    }
 }
 
 /*
