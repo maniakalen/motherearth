@@ -38,6 +38,10 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
     ];
+    if (!isset(\Yii::$app->params['menuItems'])) {
+	    \Yii::$app->params['menuItems'] = [];
+    }
+    $menuItems = \yii\helpers\ArrayHelper::merge($menuItems, \Yii::$app->params['menuItems']);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {

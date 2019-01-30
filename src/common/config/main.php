@@ -9,5 +9,22 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'authManager' => [
+	        'class' => 'yii\rbac\DbManager',
+	        'defaultRoles' => ['guest'],
+        ],
+        'urlManager' => [
+	        'class' => 'yii\web\UrlManager',
+	        'enablePrettyUrl' => true,
+	        'showScriptName' => false,
+	        'suffix' => '.html',
+	        'rules' => [
+	        ],
+        ],
     ],
+	'modules' => [
+		'workflow' => [
+			'class' => 'maniakalen\workflow\Module'
+		]
+	]
 ];

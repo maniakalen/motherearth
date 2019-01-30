@@ -10,8 +10,12 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
-    'modules' => [],
+    'bootstrap' => ['log', 'workflow'],
+    'modules' => [
+	    'workflow' => [
+		    'appTypes' => [\maniakalen\workflow\Module::ROUTES_APP_BACKEND]
+	    ]
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',

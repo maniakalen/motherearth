@@ -10,7 +10,7 @@ return [
 	'modules' => [
 		'maps' => 'maniakalen\maps\Module'
 	],
-    'bootstrap' => ['log', 'maps'],
+    'bootstrap' => ['log', 'maps', 'workflow'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
     	'location' => [
@@ -40,15 +40,7 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
-        ],
-        'urlManager' => [
-	        'class' => 'yii\web\UrlManager',
-	        'enablePrettyUrl' => true,
-	        'showScriptName' => false,
-	        'suffix' => '.html',
-            'rules' => [
-            ],
-        ],
+        ]
 
     ],
     'params' => $params,

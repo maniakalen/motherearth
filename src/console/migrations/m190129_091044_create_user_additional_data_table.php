@@ -18,6 +18,14 @@ class m190129_091044_create_user_additional_data_table extends Migration
 	        'phone' => $this->string(),
 	        'details' => $this->text()
         ]);
+
+	    $this->addForeignKey(
+		    'fk_user_data_user_id',
+		    'user_additional_data',
+		    'user_id',
+		    'user',
+		    'id'
+	    );
     }
 
     /**
