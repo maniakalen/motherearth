@@ -20,7 +20,11 @@ return [
             'class' => 'yii\console\controllers\FixtureController',
             'namespace' => 'common\fixtures',
           ],
+        'migrate' => [
+            'class' => 'maniakalen\migration\controllers\MigrateController',
+        ],
     ],
+
     'components' => [
         'log' => [
             'targets' => [

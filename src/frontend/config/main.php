@@ -8,7 +8,24 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
 	'modules' => [
-		'maps' => 'maniakalen\maps\Module'
+		'maps' => 'maniakalen\maps\Module',
+        'workflow' => [
+            'appendRoutes' => false,
+            'routes' => [
+                [
+                    'pattern' => '<wf_url:(signup)>/<step_url>',
+                    'route' => 'workflow/workflow/render',
+                    'verb' => 'GET',
+                    'defaults' => ['wf_url' => 'default']
+                ],
+                [
+                    'pattern' => '<wf_url:(signup)>/<step_url>',
+                    'route' => 'workflow/workflow/process',
+                    'verb' => 'POST',
+                    'defaults' => ['wf_url' => 'default']
+                ]
+            ]
+        ]
 	],
     'bootstrap' => ['log', 'maps', 'workflow'],
     'controllerNamespace' => 'frontend\controllers',

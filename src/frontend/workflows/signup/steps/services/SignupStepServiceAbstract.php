@@ -2,31 +2,31 @@
 /**
  * Created by PhpStorm.
  * User: peter.georgiev
- * Date: 1/30/2019
- * Time: 3:34 PM
+ * Date: 1/31/2019
+ * Time: 11:11 AM
  */
 
-namespace frontend\workflows\signup\steps;
+namespace frontend\workflows\signup\steps\services;
 
-
-
-use maniakalen\workflow\interfaces\StepServiceInterface;
 use maniakalen\workflow\models\WorkflowSteps;
+use Yii;
+use maniakalen\workflow\interfaces\StepServiceInterface;
 use yii\base\InvalidArgumentException;
-use yii\base\View;
 
-class General implements StepServiceInterface
+abstract class SignupStepServiceAbstract implements StepServiceInterface
 {
-    private $step;
-
+    protected $step;
+    protected $get;
+    protected $post;
+    public $view;
     public function setGetRequestParams(array $params)
     {
-        // TODO: Implement setGetRequestParams() method.
+        $this->get = $params;
     }
 
     public function setPostRequestParams(array $params)
     {
-        // TODO: Implement setPostRequestParams() method.
+        $this->post = $params;
     }
 
     public function getStep()
@@ -42,21 +42,11 @@ class General implements StepServiceInterface
         $this->step = $step;
         return $this;
     }
-
-    /**
-     * @param array $get
-     *
-     * @return
-     */
-    public function render(View $view)
-    {
-
-    }
-
     /**
      * @return string the view path that may be prefixed to a relative view name.
      */
     public function getViewPath()
     {
-        // TODO: Implement getViewPath() method.
-}}
+        return Yii::getAlias('@app/workflows/signup/views');
+    }
+}

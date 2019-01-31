@@ -26,7 +26,7 @@
                 <a class="login btn btn-link" href="/site/login.html">Вход</a>
             </div>
             <div>
-                <a class="sign-up btn btn-link" href="/site/signup.html">Регистрация</a>
+                <a class="sign-up btn btn-link" href="/signup/general.html">Регистрация</a>
             </div>
             <div>
                 <a class="map btn btn-link" href="/site/map.html">Към картата</a>

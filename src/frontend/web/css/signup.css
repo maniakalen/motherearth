@@ -1,0 +1,13 @@
+.signup-form {
+    text-align: left;
+    background: rgba(255, 255, 255, 0.3);
+    border: solid #73fff0 1px;
+    border-radius: 15px;
+}
+.site-index > .content {
+    height: 600px;
+}
+#minimap {
+    width: 765px;
+    height: 455px;
+}
