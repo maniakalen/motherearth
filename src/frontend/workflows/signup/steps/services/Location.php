@@ -10,40 +10,23 @@ namespace frontend\workflows\signup\steps\services;
 
 
 use frontend\models\SignupForm;
-use maniakalen\workflow\interfaces\StepServiceInterface;
 use yii\base\View;
 
 class Location extends SignupStepServiceAbstract
 {
 
-    public function setGetRequestParams(array $params)
-    {
-        // TODO: Implement setGetRequestParams() method.
-    }
-
-    public function setPostRequestParams(array $params)
-    {
-        // TODO: Implement setPostRequestParams() method.
-    }
-
-    public function getStep()
-    {
-        // TODO: Implement getStep() method.
-    }
-
-    public function setStep($step)
-    {
-        // TODO: Implement setStep() method.
-    }
-
     /**
      * @param array $get
      *
      * @return
+     * @throws \yii\base\InvalidConfigException
      */
     public function render(View $view)
     {
-        $model = \Yii::createObject(SignupForm::className());
+        $model = \Yii::createObject([
+            'class' => SignupForm::className(),
+            'scenario' => SignupForm::SCENARIO_LOCATION
+        ]);
         if (($data = \Yii::$app->session->removeFlash($model->formName()))) {
             $model->load(unserialize($data[0]));
         }

@@ -5,9 +5,15 @@
     border-radius: 15px;
 }
 .site-index > .content {
-    height: 600px;
+    height: 850px;
+    margin-top: -425px;
 }
 #minimap {
     width: 765px;
     height: 455px;
+}
+
+.btn-small-space {
+    white-space: normal;
+    font-size: 10px;
 }

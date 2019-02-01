@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'password')->passwordInput() ?>
 
-            <?= $form->field($model, 'phone')->passwordInput() ?>
+            <?= $form->field($model, 'phone') ?>
 
             <?= $form->field($model, 'details')->textarea() ?>
             <div class="form-group">

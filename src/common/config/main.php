@@ -21,6 +21,9 @@ return [
 	        'rules' => [
 	        ],
         ],
+        'geounits' => [
+            'class' => 'common\components\GeoUnitsManager'
+        ]
     ],
 	'modules' => [
 		'workflow' => [

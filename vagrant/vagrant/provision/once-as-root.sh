@@ -54,7 +54,7 @@ echo "Done!"
 #echo "Done!"
 
 info "Enabling site configuration"
-ln -s /data/vagrant/apache/vhost-vagrant.conf /etc/apache2/sites-enabled/motherearth.conf
+ln -s /data/vagrant/vagrant/apache/vhost-vagrant.conf /etc/apache2/sites-enabled/motherearth.conf
 echo "Done!"
 
 #info "Initailize databases for MySQL"

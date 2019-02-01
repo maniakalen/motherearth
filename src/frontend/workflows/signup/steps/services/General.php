@@ -22,7 +22,10 @@ class General extends SignupStepServiceAbstract implements SaveActionInterface
      */
     public function render(View $view)
     {
-        $model = \Yii::createObject(SignupForm::className());
+        $model = \Yii::createObject([
+            'class' => SignupForm::className(),
+            'scenario' => SignupForm::SCENARIO_GENERAL
+        ]);
         if (($data = \Yii::$app->session->removeFlash($model->formName()))) {
             $model->load(unserialize($data[0]));
         }
@@ -43,6 +46,7 @@ class General extends SignupStepServiceAbstract implements SaveActionInterface
             $next = $this->step->nextStep;
             $workflow = $this->step->workflow;
             if ($next) {
+                \Yii::$app->session->addFlash($model->formName(), serialize(['user_id' => $model->user_id]));
                 return \Yii::$app->response->redirect([
                     'workflow/workflow/render',
                     'wf_url' => $workflow->url_route,

@@ -19,6 +19,10 @@ class SignupForm extends Model
     public $password;
 	public $phone;
 	public $details;
+	public $user_id;
+	public $province;
+	public $city;
+	public $address;
 
     /**
      * {@inheritdoc}
@@ -43,7 +47,9 @@ class SignupForm extends Model
 	        ['phone', 'string', 'max' => 11, 'on' => self::SCENARIO_GENERAL],
 	        ['details', 'string', 'on' => self::SCENARIO_GENERAL],
 
-            []
+            ['user_id', 'integer', 'on' => [self::SCENARIO_LOCATION, self::SCENARIO_PRODUCTS]],
+            [['province', 'city'], 'integer', 'on' => self::SCENARIO_LOCATION],
+            [['address'], 'string', 'on' => self::SCENARIO_LOCATION]
 
         ];
     }

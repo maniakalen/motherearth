@@ -22,7 +22,7 @@ class GeoUnitsManager extends Component
     public function init()
     {
         parent::init();
-        $this->types = ArrayHelper::map(GeoUnitTypes::findAll(1), 'id', 'name');
+        $this->types = ArrayHelper::map(GeoUnitTypes::find()->all(), 'id', 'name');
     }
 
     public function getGeoUnitsByType($typeId)
@@ -42,10 +42,10 @@ class GeoUnitsManager extends Component
 
     public function getTypeId($type)
     {
-        if (!isset($this->types[$type])) {
+        $types = array_flip($this->types);
+        if (!isset($types[$type])) {
             throw new InvalidValueException("Missing GeoUnit type value");
         }
-        $types = array_flip($this->types);
         return $types[$type];
     }
 
