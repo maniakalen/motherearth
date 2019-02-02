@@ -28,12 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'form-signup', 'enableClientScript' => false]); ?>
             <?= $form->field($model, 'user_id')->hiddenInput()->label(false); ?>
             <div class="col-md-5">
-                <?= $form->field($model, 'province')->dropDownList(ArrayHelper::map(\Yii::$app->geounits->getProvinces(), 'id', 'name')) ?>
-                <a class="btn btn-link btn-small-space" href="#">Can't find your province? Help us improve our database.</a>
+                <?= $form->field($model, 'province') ?>
             </div>
             <div class="col-md-5">
-                <?= $form->field($model, 'city')->dropDownList(ArrayHelper::map(\Yii::$app->geounits->getCities(), 'id', 'name')) ?>
-                <a class="btn btn-link btn-small-space" href="#">Can't find your city? Help us improve our database.</a>
+                <?= $form->field($model, 'city') ?>
             </div>
             <div class="col-md-12">
             <?= $form->field($model, 'address') ?>

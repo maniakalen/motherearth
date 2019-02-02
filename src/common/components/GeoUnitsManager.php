@@ -51,6 +51,11 @@ class GeoUnitsManager extends Component
 
     public function searchGeoUnit($name)
     {
-        $unit = \Yii::$app->location->searchGeoUnit($name);
+        return \Yii::$app->location->getGeoUnitCoords($name);
+    }
+
+    public function searchByCoords($lat, $lon)
+    {
+        return json_decode(\Yii::$app->location->searchCoords($lat, $lon), JSON_UNESCAPED_UNICODE);
     }
 }

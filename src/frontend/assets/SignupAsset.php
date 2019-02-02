@@ -21,5 +21,6 @@ class SignupAsset extends AssetBundle
     ];
     public $depends = [
         'frontend\assets\AppAsset',
+        'yii\bootstrap\BootstrapPluginAsset'
     ];
 }

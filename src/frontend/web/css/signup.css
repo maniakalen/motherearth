@@ -17,3 +17,9 @@
     white-space: normal;
     font-size: 10px;
 }
+
+.img-loading {
+    left: 50%;
+    position: relative;
+    margin-left: -109px;
+}

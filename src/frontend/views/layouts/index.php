@@ -36,7 +36,7 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
-
+<?= $this->render('//partials/modal')?>
 <?php $this->endBody() ?>
 </body>
 </html>

@@ -19,6 +19,7 @@ return [
 	        'showScriptName' => false,
 	        'suffix' => '.html',
 	        'rules' => [
+                '<controller>/<action>' => '<controller>/<action>'
 	        ],
         ],
         'geounits' => [
