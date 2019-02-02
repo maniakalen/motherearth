@@ -10,10 +10,10 @@ use maniakalen\workflow\widgets\Actions;
 use maniakalen\workflow\helpers\ActionsHelper;
 use yii\helpers\ArrayHelper;
 
+\frontend\assets\BloodhoundAsset::register($this);
 \frontend\assets\SignupAsset::register($this);
 \maniakalen\maps\assets\LeafletAsset::registerMapAsset($this, 'minimap', 'pk.eyJ1IjoibWFuaWFrYWxlbiIsImEiOiJjanI2ZjJnNWwwOHA2NDluamVrN3lhdG81In0.YASdNSL-lEnFojai4C96kw', [42.5814857, 25.4725568], 8);
 \frontend\assets\LeafletSignupAsset::register($this);
-
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -28,10 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'form-signup', 'enableClientScript' => false]); ?>
             <?= $form->field($model, 'user_id')->hiddenInput()->label(false); ?>
             <div class="col-md-5">
-                <?= $form->field($model, 'province') ?>
+                <?= $form->field($model, 'province')->textInput(['id' => 'provinceName', 'class' => 'form-control typeahead typeahead-location']) ?>
             </div>
             <div class="col-md-5">
-                <?= $form->field($model, 'city') ?>
+                <?= $form->field($model, 'city')->textInput(['id' => 'cityName', 'class' => 'form-control typeahead typeahead-location']) ?>
             </div>
             <div class="col-md-12">
             <?= $form->field($model, 'address') ?>

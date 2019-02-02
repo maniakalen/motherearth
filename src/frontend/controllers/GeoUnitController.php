@@ -26,7 +26,7 @@ class GeoUnitController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['search-unit', 'search-coords'],
+                        'actions' => ['search-unit-data', 'search-coords'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -36,10 +36,10 @@ class GeoUnitController extends Controller
     }
 
 
-    public function actionSearchCoords($unit)
+    public function actionSearchUnitData($unit)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        return \Yii::$app->geounits->searchGeoUnit($unit);
+        return json_decode(\Yii::$app->location->searchGeoUnit($unit), JSON_UNESCAPED_UNICODE);
     }
 
     public function actionSearchUnit($lat, $lon)
