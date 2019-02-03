@@ -39,7 +39,13 @@ class GeoUnitController extends Controller
     public function actionSearchUnitData($unit)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
-        return json_decode(\Yii::$app->location->searchGeoUnit($unit), JSON_UNESCAPED_UNICODE);
+        $data = json_decode(\Yii::$app->location->searchGeoUnit($unit), JSON_UNESCAPED_UNICODE);
+        $data = $data['Response']['View'][0]['Result'];
+        $list = [];
+        foreach ($data as $k => $item) {
+            $list[] = ['id' => $k, 'value' => $item['Location']['Address']['Label']];
+        }
+        return $list;
     }
 
     public function actionSearchUnit($lat, $lon)
