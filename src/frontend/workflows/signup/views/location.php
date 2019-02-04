@@ -27,11 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <p>Please provide your exact location:</p>
             <?php $form = ActiveForm::begin(['id' => 'form-signup', 'enableClientScript' => false]); ?>
             <?= $form->field($model, 'user_id')->hiddenInput()->label(false); ?>
-            <div class="col-md-5">
-                <?= $form->field($model, 'province')->textInput(['id' => 'provinceName', 'class' => 'form-control typeahead typeahead-location']) ?>
+            <div class="col-md-6">
+                <?= Html::textInput('provinceNameTypeahead', '', ['id' => 'provinceName', 'class' => 'form-control typeahead typeahead-location']) ?>
+                <?= $form->field($model, 'province')->hiddenInput()->label(false) ?>
             </div>
-            <div class="col-md-5">
-                <?= $form->field($model, 'city')->textInput(['id' => 'cityName', 'class' => 'form-control typeahead typeahead-location']) ?>
+            <div class="col-md-6">
+                <?= Html::textInput('cityNameTypeahead', '', ['class' => 'form-control typeahead typeahead-location', 'id' => 'cityName']) ?>
+                <?= $form->field($model, 'city')->hiddenInput()->label(false) ?>
             </div>
             <div class="col-md-12">
             <?= $form->field($model, 'address') ?>

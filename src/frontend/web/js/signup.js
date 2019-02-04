@@ -1,16 +1,49 @@
 $(document).ready(function() {
-    var geounits = new Bloodhound({
+    var typeaheadCallback = function(obj, datum, name) {
+        var id = null;
+        if (datum.data) {
+            $.ajax({
+                "method": "POST",
+                "url" : "/geo-unit/register.html",
+                "data": datum.data
+            }).done(function(result) {
+                id = result.id;
+            });
+        } else {
+            id = datum.id;
+        }
+
+
+    };
+
+    var counties = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: '/geo-unit/search-unit-data.html?unit=%QUERY',
+            url: '/geo-unit/search-counties-list.html?unit=%QUERY',
             wildcard: '%QUERY'
         }
     });
-    geounits.initialize();
-    $('.typeahead-location').typeahead(null, {
-        name: 'geo-units',
+    counties.initialize();
+    $('#provinceName').typeahead(null, {
+        name: 'counties',
         display: 'value',
-        source: geounits.ttAdapter()
+        source: counties.ttAdapter()
+    }).on("typeahead:select", typeaheadCallback);
+
+
+    var cities = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '/geo-unit/search-cities-list.html?unit=%QUERY',
+            wildcard: '%QUERY'
+        }
     });
+    cities.initialize();
+    $('#cityName').typeahead(null, {
+        name: 'cities',
+        display: 'value',
+        source: cities.ttAdapter()
+    }).on("typeahead:select", typeaheadCallback);
 });

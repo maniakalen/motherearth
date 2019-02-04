@@ -32,7 +32,11 @@ return [
     'components' => [
     	'location' => [
     		'class' => 'maniakalen\maps\components\Location',
-		    'key' => 'e19e445dea36de'
+		    'negotiator' => [
+		        'class' => 'maniakalen\maps\negotiators\Here',
+                'appId' => 'ifQGurbqKiRUiNpkW3B1',
+                'appCode' => 'OxhEjE0cIuwtLk3fanpaaA'
+            ]
 	    ],
         'request' => [
             'csrfParam' => '_csrf-frontend',

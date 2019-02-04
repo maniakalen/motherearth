@@ -58,4 +58,18 @@ class GeoUnitsManager extends Component
     {
         return json_decode(\Yii::$app->location->searchCoords($lat, $lon), JSON_UNESCAPED_UNICODE);
     }
+
+    public function registerGeoUnit($type, $name, $lat, $lon)
+    {
+        if ($unit = GeoUnits::find()->where(['name' => $name])->one()) {
+            return $unit->id;
+        }
+        $types = array_flip($this->types);
+        $geounit = \Yii::createObject(GeoUnits::className());
+        $geounit->name = $name;
+        $geounit->lat = $lat;
+        $geounit->lon = $lon;
+        $geounit->type = $types[$type]?:'city';
+        return $geounit->save()?$geounit->id:false;
+    }
 }
