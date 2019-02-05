@@ -13,39 +13,6 @@ class m190131_164405_create_m_workflow_table extends Migration
     public function safeUp()
     {
         try {
-            $tableOptions = null;
-            if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-                $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-            }
-        $this->createTable('{{%m_workflow}}', [
-            'id' => $this->primaryKey(),
-            'url_route' => $this->string(45)->notNull(),
-            'name' => $this->string(255),
-            'description' => $this->string()(),
-            'status' => $this->integer(1),
-            'auto_transit' => $this->integer(1),
-            'layout' => $this->string(255),
-        ], $tableOptions);
-
-            // creates index
-    $this->createIndex(
-    'idx_status_workflow',
-    '{{%m_workflow}}',
-    ['status'],
-    false    );
-        // creates index
-    $this->createIndex(
-    'idx_route_search_workflow',
-    '{{%m_workflow}}',
-    ['url_route'],
-    false    );
-        // creates index
-    $this->createIndex(
-    'idx_auto_transit_workflow',
-    '{{%m_workflow}}',
-    ['auto_transit'],
-    false    );
         $this->execute('SET FOREIGN_KEY_CHECKS = 0');
         $this->batchInsert(
         '{{%m_workflow}}',
@@ -67,22 +34,7 @@ class m190131_164405_create_m_workflow_table extends Migration
     public function safeDown()
     {
         try {
-            // creates index
-    $this->dropIndex(
-    'idx_status_workflow',
-    '{{%m_workflow}}'
-    );
-        // creates index
-    $this->dropIndex(
-    'idx_route_search_workflow',
-    '{{%m_workflow}}'
-    );
-        // creates index
-    $this->dropIndex(
-    'idx_auto_transit_workflow',
-    '{{%m_workflow}}'
-    );
-$this->dropTable('{{%m_workflow}}');
+            $this->delete('{{%m_workflow}}', ['id' => 1]);
         } catch (\Exception $ex) {
             return false;
         }

@@ -22,6 +22,10 @@ return [
           ],
         'migrate' => [
             'class' => 'maniakalen\migration\controllers\MigrateController',
+            'migrationPath' => [
+                '@app/migrations',
+                '@vendor/yiisoft/yii2/rbac/migrations'
+            ]
         ],
     ],
 

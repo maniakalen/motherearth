@@ -16,12 +16,6 @@ class m190131_164517_create_auth_assignment_table extends Migration
     public function safeUp()
     {
         try {
-            $tableOptions = null;
-            if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-                $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-            }
-
             $this->execute('SET FOREIGN_KEY_CHECKS = 0');
             $this->batchInsert(
             '{{%auth_assignment}}',

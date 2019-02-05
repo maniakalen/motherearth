@@ -12,15 +12,18 @@ class m190129_091044_create_user_additional_data_table extends Migration
      */
     public function safeUp()
     {
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
         $this->createTable('user_additional_data', [
             'id' => $this->primaryKey(),
 	        'user_id' => $this->integer(),
 	        'phone' => $this->string(),
 	        'details' => $this->text()
-        ]);
+        ], $tableOptions);
 
 	    $this->addForeignKey(
-		    'fk_user_data_user_id',
+		    'fk_user_additional_data_user_id',
 		    'user_additional_data',
 		    'user_id',
 		    'user',

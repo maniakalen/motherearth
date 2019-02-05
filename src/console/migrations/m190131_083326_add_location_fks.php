@@ -34,10 +34,11 @@ class m190131_083326_add_location_fks extends Migration
      */
     public function safeDown()
     {
+        $this->execute('SET FOREIGN_KEY_CHECKS = 0');
         $this->dropForeignKey('fk_user_data_geounit_province_id', 'user_locations');
         $this->dropForeignKey('fk_user_data_geounit_city_id', 'user_locations');
-
-        return false;
+        $this->execute('SET FOREIGN_KEY_CHECKS = 1');
+        return true;
     }
 
     /*

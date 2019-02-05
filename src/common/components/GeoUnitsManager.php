@@ -9,6 +9,7 @@
 namespace common\components;
 
 
+use common\interfaces\GeoUnitsInterface;
 use common\models\GeoUnits;
 use common\models\GeoUnitTypes;
 use maniakalen\maps\components\Location;
@@ -22,31 +23,31 @@ class GeoUnitsManager extends Component
     public function init()
     {
         parent::init();
-        $this->types = ArrayHelper::map(GeoUnitTypes::find()->all(), 'id', 'name');
+        $this->types = [
+            GeoUnitsInterface::TYPE_COUNTY,
+            GeoUnitsInterface::TYPE_CITY,
+            GeoUnitsInterface::TYPE_DISTRICT
+        ];
     }
 
-    public function getGeoUnitsByType($typeId)
+    public function getGeoUnitsByType($type)
     {
-        return GeoUnits::findAll(['type' => $typeId]);
+        return GeoUnits::findAll(['type' => $type]);
     }
 
     public function getProvinces()
     {
-        return $this->getGeoUnitsByType($this->getTypeId('province'));
+        return $this->getGeoUnitsByType('county');
     }
 
     public function getCities()
     {
-        return $this->getGeoUnitsByType($this->getTypeId('city'));
+        return $this->getGeoUnitsByType('city');
     }
 
-    public function getTypeId($type)
+    public function getDistricts()
     {
-        $types = array_flip($this->types);
-        if (!isset($types[$type])) {
-            throw new InvalidValueException("Missing GeoUnit type value");
-        }
-        return $types[$type];
+        return $this->getGeoUnitsByType('district');
     }
 
     public function searchGeoUnit($name)
@@ -64,12 +65,49 @@ class GeoUnitsManager extends Component
         if ($unit = GeoUnits::find()->where(['name' => $name])->one()) {
             return $unit->id;
         }
-        $types = array_flip($this->types);
         $geounit = \Yii::createObject(GeoUnits::className());
         $geounit->name = $name;
         $geounit->lat = $lat;
         $geounit->lon = $lon;
-        $geounit->type = $types[$type]?:'city';
+        $geounit->type = in_array($type, $this->types)?$type:'city';
         return $geounit->save()?$geounit->id:false;
+    }
+
+    public function populateMissingUnits($r)
+    {
+        $types = [GeoUnitsInterface::TYPE_COUNTY, GeoUnitsInterface::TYPE_CITY, GeoUnitsInterface::TYPE_DISTRICT];
+
+        foreach ($r as $unit) {
+            if (!in_array(strtolower($unit['MatchLevel']), $types)) {
+                foreach ($unit['MatchQuality'] as $type => $quality) {
+                    if ($quality === 1 && in_array(strtolower($type), $types)) {
+                        $name = $unit['Location']['Address'][$type];
+                        if (!GeoUnits::findOne(['name' => $name, 'type' => strtolower($type)])) {
+                            $params = ['country' => 'BGR', strtolower($type) => $name];
+                            $data = json_decode(\Yii::$app->location->searchGeoUnit($unit, $params), JSON_UNESCAPED_UNICODE);
+                            if (isset($data['Response']['View'][0]['Result'])) {
+                                $unit = $data['Response']['View'][0]['Result'][0];
+                                $lat = $unit['Location']['DisplayPosition']['Latitude'];
+                                $lon = $unit['Location']['DisplayPosition']['Longitude'];
+                                $this->registerGeoUnit($type, $unit['Location']['Address'][$type], $lat, $lon);
+                            }
+                        }
+                    }
+                }
+            } else {
+                $type = strtolower($unit['MatchLevel']);
+                $name = $unit['Location']['Address'][$type];
+                if (!GeoUnits::findOne(['name' => $name, 'type' => strtolower($type)])) {
+                    $params = ['country' => 'BGR', strtolower($type) => $name];
+                    $data = json_decode(\Yii::$app->location->searchGeoUnit($unit, $params), JSON_UNESCAPED_UNICODE);
+                    if (isset($data['Response']['View'][0]['Result'])) {
+                        $unit = $data['Response']['View'][0]['Result'][0];
+                        $lat = $unit['Location']['DisplayPosition']['Latitude'];
+                        $lon = $unit['Location']['DisplayPosition']['Longitude'];
+                        $this->registerGeoUnit($type, $unit['Location']['Address'][$type], $lat, $lon);
+                    }
+                }
+            }
+        }
     }
 }

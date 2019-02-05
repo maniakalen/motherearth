@@ -9,6 +9,7 @@
 namespace frontend\workflows\signup\steps\services;
 
 
+use common\models\GeoUnits;
 use frontend\models\SignupForm;
 use yii\base\View;
 

@@ -12,13 +12,16 @@ class m190129_092921_create_geo_units_table extends Migration
      */
     public function safeUp()
     {
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
         $this->createTable('geo_units', [
             'id' => $this->primaryKey(),
-	        'type' => $this->integer(),
+	        'type' => "ENUM('county', 'city', 'district')",
 	        'name' => $this->string(),
 	        'lat' => $this->string(),
 	        'lon' => $this->string()
-        ]);
+        ], $tableOptions);
     }
 
     /**

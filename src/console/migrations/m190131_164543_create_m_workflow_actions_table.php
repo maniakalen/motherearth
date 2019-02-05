@@ -19,7 +19,7 @@ class m190131_164543_create_m_workflow_actions_table extends Migration
             '{{%m_workflow_actions}}',
             ['id','name','type','styles','service_class','status'],
             [
-                    ['1','Continue','input','{"type":"submit", "class":"btn btn-primary pull-right", "valueTemp": "[value]"}','{"class":"frontend\\workflows\\signup\\actions\\Save"}','1'],
+                    ['1','Continue','input','{"type":"submit", "class":"btn btn-primary pull-right", "valueTemp": "[value]"}','{"class":"frontend\\\\workflows\\\\signup\\\\actions\\\\Save"}','1'],
             ]);
             $this->execute('SET FOREIGN_KEY_CHECKS = 1');
         } catch (\Exception $ex) {

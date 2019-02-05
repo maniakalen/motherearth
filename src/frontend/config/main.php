@@ -35,7 +35,8 @@ return [
 		    'negotiator' => [
 		        'class' => 'maniakalen\maps\negotiators\Here',
                 'appId' => 'ifQGurbqKiRUiNpkW3B1',
-                'appCode' => 'OxhEjE0cIuwtLk3fanpaaA'
+                'appCode' => 'OxhEjE0cIuwtLk3fanpaaA',
+                'supportsParams' => true
             ]
 	    ],
         'request' => [

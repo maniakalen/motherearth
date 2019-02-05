@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\interfaces\GeoUnitsInterface;
 use Yii;
 
 /**
@@ -16,7 +17,7 @@ use Yii;
  * @property UserLocations[] $userLocations
  * @property UserLocations[] $userLocations0
  */
-class GeoUnits extends \yii\db\ActiveRecord
+class GeoUnits extends \yii\db\ActiveRecord implements GeoUnitsInterface
 {
     /**
      * {@inheritdoc}
@@ -32,7 +33,11 @@ class GeoUnits extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type'], 'integer'],
+            [['type'], 'in', 'range' => [
+                GeoUnitsInterface::TYPE_DISTRICT,
+                GeoUnitsInterface::TYPE_CITY,
+                GeoUnitsInterface::TYPE_COUNTY
+            ]],
             [['name', 'lat', 'lon'], 'string', 'max' => 255],
         ];
     }
