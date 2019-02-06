@@ -24,6 +24,9 @@ return [
         ],
         'geounits' => [
             'class' => 'common\components\GeoUnitsManager'
+        ],
+        'callback' => [
+            'class' => 'maniakalen\callback\components\CallbacksManager'
         ]
     ],
 	'modules' => [

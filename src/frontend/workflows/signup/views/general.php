@@ -30,6 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'phone') ?>
 
+            <?= $form->field($model, 'user_type')->dropDownList(['producer' => 'Производител', 'consumer' => 'Потребител']) ?>
+
             <?= $form->field($model, 'details')->textarea() ?>
             <div class="form-group">
                 <?php try {

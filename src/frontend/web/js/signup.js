@@ -46,4 +46,15 @@ $(document).ready(function() {
         display: 'value',
         source: cities.ttAdapter()
     }).on("typeahead:select", typeaheadCallback);
+
+    window.loading = {
+        show: function () {
+            $('#divLoading').removeClass('hidden').appendTo('#modalContainer .modal-content');
+            $('#modalContainer .modal-content').addClass('tiny');
+            $('#modalContainer').modal('show');
+        },
+        hide: function () {
+            $('#modalContainer').modal('hide');
+        }
+    };
 });

@@ -23,6 +23,7 @@ class SignupForm extends Model
 	public $province;
 	public $city;
 	public $address;
+	public $user_type;
 
     /**
      * {@inheritdoc}
@@ -40,6 +41,7 @@ class SignupForm extends Model
             ['email', 'email', 'on' => self::SCENARIO_GENERAL],
             ['email', 'string', 'max' => 255, 'on' => self::SCENARIO_GENERAL],
             ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.', 'on' => self::SCENARIO_GENERAL],
+            ['user_type','in', 'range' => ['producer', 'consumer'], 'on' => self::SCENARIO_GENERAL],
 
             ['password', 'required', 'on' => self::SCENARIO_GENERAL],
             ['password', 'string', 'min' => 6, 'on' => self::SCENARIO_GENERAL],
@@ -85,6 +87,7 @@ class SignupForm extends Model
             $userData = \Yii::createObject(['class' => 'common\models\UserAdditionalData', 'user_id' => $user->id]);
             $userData->phone = $this->phone;
             $userData->details = $this->details;
+            $userData->user_type = $this->user_type;
             return $userData->save()?$user:null;
         }
 

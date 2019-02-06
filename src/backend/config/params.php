@@ -5,7 +5,7 @@ return [
 		[
 			'url' => null,
 			'label' => Yii::t('app', 'Workflow config'),
-			'visible' => 'maniakalen/workflow/view',
+			'visible' => function() { return \Yii::$app->user->can('maniakalen/workflow/view'); },
 			'options' => ['class' => 'menu-item-workflows'],
 			'items' => [
 				[
