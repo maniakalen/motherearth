@@ -161,7 +161,21 @@ class GeoUnitController extends Controller
         if (isset($r['Response']) && isset($r['Response']['View'])
             && isset($r['Response']['View'][0]) && isset($r['Response']['View'][0]['Result'])) {
             \Yii::$app->geounits->populateMissingUnits($r['Response']['View'][0]['Result']);
+            $data = reset($r['Response']['View'][0]['Result']);
+            $result = ['Address' => $data['Location']['Address'], 'Coords' => $data['Location']['DisplayPosition']];
+            if (isset($result['Address']['District'])) {
+                $result['District'] = \Yii::$app->geounits->getDistrict($result['Address']['District']);
+            }
+            if (isset($result['Address']['City'])) {
+                $result['City'] = \Yii::$app->geounits->getCity($result['Address']['City']);
+            }
+            if (isset($result['Address']['County'])) {
+                $result['County'] = \Yii::$app->geounits->getCounty($result['Address']['County']);
+            }
+
+            return $result;
         }
 
+        return null;
     }
 }

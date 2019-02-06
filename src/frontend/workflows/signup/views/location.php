@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'city')->hiddenInput()->label(false) ?>
             </div>
             <div class="col-md-12">
-            <?= $form->field($model, 'address') ?>
+            <?= $form->field($model, 'address')->textInput(['id' => 'address']) ?>
             </div>
             <div id="minimap"></div>
             <div class="form-group">

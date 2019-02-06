@@ -12,6 +12,7 @@ namespace frontend\workflows\signup\steps\services;
 use common\models\GeoUnits;
 use frontend\models\SignupForm;
 use yii\base\View;
+use yii\web\BadRequestHttpException;
 
 class Location extends SignupStepServiceAbstract
 {
@@ -21,6 +22,7 @@ class Location extends SignupStepServiceAbstract
      *
      * @return
      * @throws \yii\base\InvalidConfigException
+     * @throws BadRequestHttpException
      */
     public function render(View $view)
     {
@@ -29,10 +31,13 @@ class Location extends SignupStepServiceAbstract
             'scenario' => SignupForm::SCENARIO_LOCATION
         ]);
         if (($data = \Yii::$app->session->removeFlash($model->formName()))) {
-            $model->load(unserialize($data[0]));
+            $model->load(unserialize($data[0]), '');
         }
         if (($data = \Yii::$app->session->removeFlash($model->formName() . '_errors'))) {
             $model->addErrors(unserialize($data[0]));
+        }
+        if (!$model->user_id) {
+            throw new BadRequestHttpException("Missing fundamental data");
         }
         return $view->render($this->view, ['model' => $model, 'step' => $this->getStep()], $this);
     }
