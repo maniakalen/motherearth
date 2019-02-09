@@ -1,19 +1,34 @@
 $(document).ready(function() {
-    var typeaheadCallback = function(obj, datum, name) {
-        var id = null;
+    var typeaheadCallback = function(e, datum) {
+        var id = null, target = $(e.target);
         if (datum.data) {
+            loading.show();
             $.ajax({
                 "method": "POST",
                 "url" : "/geo-unit/register.html",
                 "data": datum.data
             }).done(function(result) {
                 id = result.id;
+                loading.hide();
+            }).fail(function() {
+                loading.hide();
             });
+            if (target.attr('id') === 'cityName' && $('#provinceName').val() === '') {
+                var province = datum.data.Location.Address.County;
+                $.ajax({
+                    "method": "GET",
+                    "url" : "/geo-unit/search-counties-list.html",
+                    "data": {"unit":province}
+                }).done(function(result) {
+                    var data = result.shift();
+                    typeaheadCallback({"target": "#provinceName"}, data);
+                }).fail(function() {
+                    loading.hide();
+                });
+            }
         } else {
             id = datum.id;
         }
-
-
     };
 
     var counties = new Bloodhound({

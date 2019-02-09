@@ -37,7 +37,7 @@ class Location extends SignupStepServiceAbstract
             $model->addErrors(unserialize($data[0]));
         }
         if (!$model->user_id) {
-            throw new BadRequestHttpException("Missing fundamental data");
+            //throw new BadRequestHttpException("Missing fundamental data");
         }
         return $view->render($this->view, ['model' => $model, 'step' => $this->getStep()], $this);
     }

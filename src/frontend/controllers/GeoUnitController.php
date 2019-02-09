@@ -128,7 +128,7 @@ class GeoUnitController extends Controller
         }
         $data = $data['Response']['View'][0]['Result'];
         $list = [];
-        $geoUnitType = [GeoUnitsInterface::TYPE_CITY, GeoUnitsInterface::TYPE_COUNTY, GeoUnitsInterface::TYPE_DISTRICT];
+        $geoUnitType = [GeoUnitsInterface::TYPE_CITY];
         foreach ($data as $k => $item) {
             if (in_array($item['MatchLevel'], $geoUnitType)) {
                 $nameItem = ucfirst($item['MatchLevel']);
@@ -145,6 +145,9 @@ class GeoUnitController extends Controller
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $data = json_decode(\Yii::$app->location->searchGeoUnit($unit), JSON_UNESCAPED_UNICODE);
+        if (!isset($data['Response']['View'][0])) {
+            return [];
+        }
         $data = $data['Response']['View'][0]['Result'];
         $list = [];
         foreach ($data as $k => $item) {

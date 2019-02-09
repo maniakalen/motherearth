@@ -9,7 +9,9 @@ $(document).ready(function() {
                 $('#provinceName').val(data.County.name);
                 $('#address').val(data.Address.Label);
                 loading.hide();
-            }).fail(function() { loading.hide(); });
+            }).fail(function() {
+                loading.hide();
+            });
         });
     });
 });
