@@ -11,6 +11,7 @@
 #minimap {
     width: 765px;
     height: 455px;
+    z-index: 1;
 }
 
 .btn-small-space {
@@ -21,9 +22,22 @@
 .img-loading {
     left: 50%;
     position: relative;
-    margin-left: -109px;
+    margin-left: -7px;
 }
 
-.tiny {
+
+
+.input-loading {
+    background-color: #ffffff;
+    background-image: url("../img/ajaxloader.gif");
+    background-size: 25px 25px;
+    background-position:right center;
+    background-repeat: no-repeat;
+}
+
+.leaflet-popup-content-wrapper {
+    border: solid 2px #00ace7 !important;
+    border-radius: 7px !important;
     width: 160px;
+    padding: 10px 25px 10px 15px !important;
 }

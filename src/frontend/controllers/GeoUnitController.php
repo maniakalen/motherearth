@@ -29,7 +29,7 @@ class GeoUnitController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['search-counties-list','search-cities-list', 'search-coords', 'register', 'search-unit'],
+                        'actions' => ['search-counties-list','search-cities-list', 'search-coords', 'register', 'search-unit', 'search-address'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -48,115 +48,9 @@ class GeoUnitController extends Controller
     {
         $post = \Yii::$app->request->post();
 
-        $type = isset($post['MatchLevel'])?$post['MatchLevel']:'city';
-        $match = ucfirst($type);
-        $name = isset($post['Location']) &&
-                isset($post['Location']['Address']) &&
-                isset($post['Location']['Address'][$match])?$post['Location']['Address'][$match]:null;
-        $lat = isset($post['Location']) &&
-                isset($post['Location']['DisplayPosition']) &&
-                isset($post['Location']['DisplayPosition']['Latitude'])?$post['Location']['DisplayPosition']['Latitude']:null;
-
-        $lon = isset($post['Location']) &&
-                isset($post['Location']['DisplayPosition']) &&
-                isset($post['Location']['DisplayPosition']['Longitude'])?$post['Location']['DisplayPosition']['Longitude']:null;
-
-        if ($id = \Yii::$app->geounits->registerGeoUnit($type, $name, $lat, $lon)) {
-            $county = isset($post['Location']) &&
-                    isset($post['Location']['Address']) &&
-                    isset($post['Location']['Address']['County'])?$post['Location']['Address']['County']:null;
-
-            if (!GeoUnits::find()->where(['type' => GeoUnitsInterface::TYPE_COUNTY, 'name' => $name])->one()) {
-                $countyData = \Yii::$app->location->searchGeoUnit($county, ['country' => 'BGR', 'county' => $county]);
-                if (is_string($countyData)) {
-                    $countyData = json_decode($countyData, JSON_UNESCAPED_UNICODE);
-                    $countyData = $countyData['Response']['View'][0]['Result'][0];
-                }
-
-                $type = GeoUnitsInterface::TYPE_COUNTY;
-                $match = ucfirst($type);
-                $name = isset($countyData['Location']) &&
-                        isset($countyData['Location']['Address']) &&
-                        isset($countyData['Location']['Address'][$match])?
-                    $countyData['Location']['Address'][$match]:
-                    null;
-
-                if ($countyData['MatchQuality']['County'] === 1
-                    && $name === $countyData['Location']['Address']['City']) {
-
-                    $lat = isset($countyData['Location']) &&
-                           isset($countyData['Location']['DisplayPosition']) &&
-                           isset($countyData['Location']['DisplayPosition']['Latitude']) ?
-                        $countyData['Location']['DisplayPosition']['Latitude'] :
-                        null;
-
-                    $lon = isset($countyData['Location']) &&
-                           isset($countyData['Location']['DisplayPosition']) &&
-                           isset($countyData['Location']['DisplayPosition']['Longitude']) ?
-                        $countyData['Location']['DisplayPosition']['Longitude'] :
-                        null;
-
-                    \Yii::$app->geounits->registerGeoUnit($type, $name, $lat, $lon);
-                }
-            }
-
-            return $id;
-        }
-
+        return \Yii::$app->geounits->registerUnits($post, 'Street');
     }
 
-    public function actionSearchCitiesList($unit, $county = null, $city = null, $district = null)
-    {
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        $params = ['country' => 'BGR'];
-        if ($county) {
-            $params = ArrayHelper::merge($params, ['county' => $county]);
-        }
-        if ($city) {
-            $params = ArrayHelper::merge($params, ['city' => $city]);
-        }
-        if ($district) {
-            $params = ArrayHelper::merge($params, ['district' => $district]);
-        }
-        $data = json_decode(\Yii::$app->location->searchGeoUnit($unit, $params), JSON_UNESCAPED_UNICODE);
-        if (!isset($data['Response'])
-            || !isset($data['Response']['View'])
-            || !isset($data['Response']['View'][0])
-            || !isset($data['Response']['View'][0]['Result'])) {
-
-            return [];
-        }
-        $data = $data['Response']['View'][0]['Result'];
-        $list = [];
-        $geoUnitType = [GeoUnitsInterface::TYPE_CITY];
-        foreach ($data as $k => $item) {
-            if (in_array($item['MatchLevel'], $geoUnitType)) {
-                $nameItem = ucfirst($item['MatchLevel']);
-                $list[] = [
-                    'id' => $k,
-                    'value' => $item['Location']['Address'][$nameItem],
-                    'data' => $item];
-            }
-        }
-        return $list;
-    }
-
-    public function actionSearchCountiesList($unit)
-    {
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        $data = json_decode(\Yii::$app->location->searchGeoUnit($unit), JSON_UNESCAPED_UNICODE);
-        if (!isset($data['Response']['View'][0])) {
-            return [];
-        }
-        $data = $data['Response']['View'][0]['Result'];
-        $list = [];
-        foreach ($data as $k => $item) {
-            if (isset($item['Location']['Address']['County']) && $item['Location']['Address']['County'] === $unit) {
-                $list[] = ['id' => $k, 'value' => $item['Location']['Address']['County'], 'data' => $item];
-            }
-        }
-        return $list;
-    }
     public function actionSearchUnit($lat, $lon)
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
@@ -166,19 +60,29 @@ class GeoUnitController extends Controller
             \Yii::$app->geounits->populateMissingUnits($r['Response']['View'][0]['Result']);
             $data = reset($r['Response']['View'][0]['Result']);
             $result = ['Address' => $data['Location']['Address'], 'Coords' => $data['Location']['DisplayPosition']];
-            if (isset($result['Address']['District'])) {
-                $result['District'] = \Yii::$app->geounits->getDistrict($result['Address']['District']);
-            }
-            if (isset($result['Address']['City'])) {
-                $result['City'] = \Yii::$app->geounits->getCity($result['Address']['City']);
-            }
-            if (isset($result['Address']['County'])) {
-                $result['County'] = \Yii::$app->geounits->getCounty($result['Address']['County']);
-            }
+
 
             return $result;
         }
 
         return null;
+    }
+
+    public function actionSearchAddress($address)
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $params = ['country' => 'BGR', 'maxresults' => 25];
+        $data = json_decode(\Yii::$app->location->searchGeoUnit($address, $params), JSON_UNESCAPED_UNICODE);
+        if ($data) {
+            $data = $data['Response']['View'][0]['Result'];
+            $list = [];
+            foreach ($data as $k => $item) {
+                $list[] = ['id' => $k, 'value' => $item['Location']['Address']['Label'], 'data' => $item];
+            }
+
+            return $list;
+        }
+
+        return [];
     }
 }

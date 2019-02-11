@@ -17,11 +17,13 @@ class m190129_092921_create_geo_units_table extends Migration
         }
         $this->createTable('geo_units', [
             'id' => $this->primaryKey(),
-	        'type' => "ENUM('county', 'city', 'district')",
+	        'parent_id' => $this->integer(),
 	        'name' => $this->string(),
 	        'lat' => $this->string(),
 	        'lon' => $this->string()
         ], $tableOptions);
+
+        $this->addForeignKey('fk_parent_geo_unit_idx', 'geo_units', 'parent_id', 'geo_units', 'id', 'CASCADE', 'CASCADE');
     }
 
     /**

@@ -13,4 +13,4 @@
         </div>
     </div>
 </div>
-<div class="hidden" id="divLoading"><img class="img-loading" src="./img/ajaxloader.gif" /></div>
+<div class="hidden div-loading" id="divLoading"><img class="img-loading" src="./img/ajaxloader.gif" /></div>

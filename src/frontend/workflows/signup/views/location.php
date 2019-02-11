@@ -12,7 +12,7 @@ use yii\helpers\ArrayHelper;
 
 \frontend\assets\BloodhoundAsset::register($this);
 \frontend\assets\SignupAsset::register($this);
-\maniakalen\maps\assets\LeafletAsset::registerMapAsset($this, 'minimap', 'pk.eyJ1IjoibWFuaWFrYWxlbiIsImEiOiJjanI2ZjJnNWwwOHA2NDluamVrN3lhdG81In0.YASdNSL-lEnFojai4C96kw', [42.5814857, 25.4725568], 8);
+\maniakalen\maps\assets\LeafletAsset::registerMapAsset($this, 'minimap', 'pk.eyJ1IjoibWFuaWFrYWxlbiIsImEiOiJjanI2ZjJnNWwwOHA2NDluamVrN3lhdG81In0.YASdNSL-lEnFojai4C96kw', [42.5814857, 25.4725568], 8, ['attribution' => 'MotherEarth signup']);
 \frontend\assets\LeafletSignupAsset::register($this);
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
@@ -27,16 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <p>Please provide your exact location:</p>
             <?php $form = ActiveForm::begin(['id' => 'form-signup', 'enableClientScript' => false]); ?>
             <?= $form->field($model, 'user_id')->hiddenInput()->label(false); ?>
-            <div class="col-md-6">
-                <?= Html::textInput('provinceNameTypeahead', '', ['id' => 'provinceName', 'class' => 'form-control typeahead typeahead-location']) ?>
-                <?= $form->field($model, 'province')->hiddenInput()->label(false) ?>
-            </div>
-            <div class="col-md-6">
-                <?= Html::textInput('cityNameTypeahead', '', ['class' => 'form-control typeahead typeahead-location', 'id' => 'cityName']) ?>
-                <?= $form->field($model, 'city')->hiddenInput()->label(false) ?>
-            </div>
             <div class="col-md-12">
-            <?= $form->field($model, 'address')->textInput(['id' => 'address']) ?>
+            <?= $form->field($model, 'address')->textInput(['id' => 'address', 'typeahead typeahead-location']) ?>
             </div>
             <div id="minimap"></div>
             <div class="form-group">

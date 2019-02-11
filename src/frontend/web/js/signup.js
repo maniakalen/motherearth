@@ -13,54 +13,37 @@ $(document).ready(function() {
             }).fail(function() {
                 loading.hide();
             });
-            if (target.attr('id') === 'cityName' && $('#provinceName').val() === '') {
-                var province = datum.data.Location.Address.County;
-                $.ajax({
-                    "method": "GET",
-                    "url" : "/geo-unit/search-counties-list.html",
-                    "data": {"unit":province}
-                }).done(function(result) {
-                    var data = result.shift();
-                    typeaheadCallback({"target": "#provinceName"}, data);
-                }).fail(function() {
-                    loading.hide();
-                });
-            }
+            var coords = datum.data.Location.DisplayPosition;
+            leaflet.addMarker([coords.Latitude, coords.Longitude], datum.data.Location.Address.Label);
         } else {
             id = datum.id;
         }
     };
 
-    var counties = new Bloodhound({
+    var locations = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: '/geo-unit/search-counties-list.html?unit=%QUERY',
+            url: '/geo-unit/search-address.html?address=%QUERY',
             wildcard: '%QUERY'
         }
     });
-    counties.initialize();
-    $('#provinceName').typeahead(null, {
-        name: 'counties',
+    locations.initialize();
+    $('#address').typeahead(null, {
+        name: 'address',
         display: 'value',
-        source: counties.ttAdapter()
-    }).on("typeahead:select", typeaheadCallback);
-
-
-    var cities = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '/geo-unit/search-cities-list.html?unit=%QUERY',
-            wildcard: '%QUERY'
+        limit: 25,
+        source: locations.ttAdapter(),
+        templates: {
+            notFound: '<p>Не бяха открити резултати</p>'
         }
-    });
-    cities.initialize();
-    $('#cityName').typeahead(null, {
-        name: 'cities',
-        display: 'value',
-        source: cities.ttAdapter()
-    }).on("typeahead:select", typeaheadCallback);
+    })
+        .on("typeahead:select", typeaheadCallback)
+        .on('typeahead:asyncrequest', function(e) {
+            $('#address').addClass('input-loading');
+        }).on('typeahead:render', function(e) {
+            $('#address').removeClass('input-loading');
+        });
 
     window.loading = {
         show: function () {
