@@ -20,8 +20,6 @@ class SignupForm extends Model
 	public $phone;
 	public $details;
 	public $user_id;
-	public $province;
-	public $city;
 	public $address;
 	public $user_type;
 
@@ -50,9 +48,7 @@ class SignupForm extends Model
 	        ['details', 'string', 'on' => self::SCENARIO_GENERAL],
 
             ['user_id', 'integer', 'on' => [self::SCENARIO_LOCATION, self::SCENARIO_PRODUCTS]],
-            [['province', 'city'], 'integer', 'on' => self::SCENARIO_LOCATION],
-            [['address'], 'string', 'on' => self::SCENARIO_LOCATION]
-
+            ['address', 'integer', 'on' => self::SCENARIO_LOCATION]
         ];
     }
 
@@ -92,8 +88,17 @@ class SignupForm extends Model
         }
 
         return null;
-
     }
 
+    public function location()
+    {
+        $location = \Yii::createObject(['class' => 'common\models\UserLocations']);
+        $location->user_id = $this->user_id;
+        $location->address = $this->address;
+        if ($location->save()) {
+            return User::findOne($this->user_id);
+        }
 
+        return null;
+    }
 }

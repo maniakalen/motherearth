@@ -5,9 +5,10 @@ $(document).ready(function() {
             var lon = e.latlng.lng;
             loading.show();
             $.get('/geo-unit/search-unit.html?lat=' + lat + '&lon=' + lon).done(function(data) {
-                $('#cityName').val(data.City.name);
-                $('#provinceName').val(data.County.name);
                 $('#address').val(data.Address.Label);
+                $('#address-input').val(data.id);
+                leaflet.clear();
+                leaflet.addMarker([data.Coords.Latitude, data.Coords.Longitude], data.Address.Label);
                 loading.hide();
             }).fail(function() {
                 loading.hide();

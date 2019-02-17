@@ -18,6 +18,7 @@ class m190129_092921_create_geo_units_table extends Migration
         $this->createTable('geo_units', [
             'id' => $this->primaryKey(),
 	        'parent_id' => $this->integer(),
+	        'type' => 'ENUM("houseNumber", "street", "district", "city", "county")',
 	        'name' => $this->string(),
 	        'lat' => $this->string(),
 	        'lon' => $this->string()

@@ -33,10 +33,13 @@ class GeoUnits extends \yii\db\ActiveRecord implements GeoUnitsInterface
     public function rules()
     {
         return [
+            ['parent_id', 'integer'],
             [['type'], 'in', 'range' => [
+                GeoUnitsInterface::TYPE_STREET,
                 GeoUnitsInterface::TYPE_DISTRICT,
                 GeoUnitsInterface::TYPE_CITY,
-                GeoUnitsInterface::TYPE_COUNTY
+                GeoUnitsInterface::TYPE_COUNTY,
+                GeoUnitsInterface::TYPE_HOUSE_NUMBER
             ]],
             [['name', 'lat', 'lon'], 'string', 'max' => 255],
         ];
@@ -59,16 +62,13 @@ class GeoUnits extends \yii\db\ActiveRecord implements GeoUnitsInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserLocations()
+    public function getParent()
     {
-        return $this->hasMany(UserLocations::className(), ['city' => 'id']);
+        return $this->hasOne(GeoUnits::className(), ['id' => 'parent_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserLocations0()
+    public function getChildren()
     {
-        return $this->hasMany(UserLocations::className(), ['province' => 'id']);
+        return $this->hasOne(GeoUnits::className(), ['parent_id' => 'id']);
     }
 }

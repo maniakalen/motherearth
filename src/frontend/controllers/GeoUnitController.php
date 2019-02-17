@@ -57,11 +57,12 @@ class GeoUnitController extends Controller
         $r = \Yii::$app->geounits->searchByCoords($lat, $lon);
         if (isset($r['Response']) && isset($r['Response']['View'])
             && isset($r['Response']['View'][0]) && isset($r['Response']['View'][0]['Result'])) {
-            \Yii::$app->geounits->populateMissingUnits($r['Response']['View'][0]['Result']);
+            $id = null;
+            foreach (array_reverse($r['Response']['View'][0]['Result']) as $k => $item) {
+                $id = \Yii::$app->geounits->registerUnits($item, ucfirst($item['MatchLevel']));
+            }
             $data = reset($r['Response']['View'][0]['Result']);
-            $result = ['Address' => $data['Location']['Address'], 'Coords' => $data['Location']['DisplayPosition']];
-
-
+            $result = ['Address' => $data['Location']['Address'], 'Coords' => $data['Location']['DisplayPosition'], 'id' => $id];
             return $result;
         }
 

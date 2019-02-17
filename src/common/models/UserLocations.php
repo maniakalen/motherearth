@@ -35,10 +35,8 @@ class UserLocations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'province', 'city'], 'integer'],
-            [['lat', 'lon', 'address'], 'string', 'max' => 255],
-            [['city'], 'exist', 'skipOnError' => true, 'targetClass' => GeoUnits::className(), 'targetAttribute' => ['city' => 'id']],
-            [['province'], 'exist', 'skipOnError' => true, 'targetClass' => GeoUnits::className(), 'targetAttribute' => ['province' => 'id']],
+            [['user_id', 'address'], 'integer'],
+            [['address'], 'exist', 'skipOnError' => true, 'targetClass' => GeoUnits::className(), 'targetAttribute' => ['address' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }

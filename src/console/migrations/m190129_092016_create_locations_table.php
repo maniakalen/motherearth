@@ -18,11 +18,7 @@ class m190129_092016_create_locations_table extends Migration
         $this->createTable('user_locations', [
             'id' => $this->primaryKey(),
 	        'user_id' => $this->integer(),
-	        'lat' => $this->string(),
-	        'lon' => $this->string(),
-	        'province' => $this->integer(),
-	        'city' => $this->integer(),
-	        'address' => $this->string()
+	        'address' => $this->integer()
         ], $tableOptions);
 
 	    $this->addForeignKey(

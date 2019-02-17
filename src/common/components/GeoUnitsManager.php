@@ -29,76 +29,54 @@ class GeoUnitsManager extends Component
         return json_decode(\Yii::$app->location->searchCoords($lat, $lon), JSON_UNESCAPED_UNICODE);
     }
 
-    public function registerGeoUnit($name, $parent, $lat, $lon)
+    public function registerGeoUnit($name, $parent, $type, $lat, $lon)
     {
         if ($unit = GeoUnits::find()->where(['name' => $name, 'parent_id' => $parent])->one()) {
             return $unit->id;
         }
         $geounit = \Yii::createObject(GeoUnits::className());
         $geounit->name = $name;
+        $geounit->type = lcfirst($type);
         $geounit->lat = (string)$lat;
         $geounit->lon = (string)$lon;
         $geounit->parent_id = $parent;
-        return $geounit->save()?$geounit->id:false;
-    }
-
-    public function populateMissingUnits($r)
-    {
-        foreach ($r as $unit) {
-
-
-            if (!in_array(strtolower($unit['MatchLevel']), $types)) {
-                foreach ($unit['MatchQuality'] as $type => $quality) {
-                    if ($quality == 1 && in_array(strtolower($type), $types)) {
-                        $name = $unit['Location']['Address'][$type];
-                        if (!GeoUnits::findOne(['name' => $name, 'type' => strtolower($type)])) {
-                            $params = ['country' => 'BGR', strtolower($type) => $name];
-                            $data = json_decode(\Yii::$app->location->searchGeoUnit($name, $params), JSON_UNESCAPED_UNICODE);
-                            if (isset($data['Response']['View'][0]['Result'])) {
-                                $u = $data['Response']['View'][0]['Result'][0];
-                                $lat = $u['Location']['DisplayPosition']['Latitude'];
-                                $lon = $u['Location']['DisplayPosition']['Longitude'];
-                                $this->registerGeoUnit($type, $name, $lat, $lon);
-                            }
-                        }
-                    }
-                }
-            } else {
-                $type = strtolower($unit['MatchLevel']);
-                $name = $unit['Location']['Address'][$type];
-                if (!GeoUnits::findOne(['name' => $name, 'type' => strtolower($type)])) {
-                    $params = ['country' => 'BGR', strtolower($type) => $name];
-                    $data = json_decode(\Yii::$app->location->searchGeoUnit($unit, $params), JSON_UNESCAPED_UNICODE);
-                    if (isset($data['Response']['View'][0]['Result'])) {
-                        $unit = $data['Response']['View'][0]['Result'][0];
-                        $lat = $unit['Location']['DisplayPosition']['Latitude'];
-                        $lon = $unit['Location']['DisplayPosition']['Longitude'];
-                        $this->registerGeoUnit($type, $unit['Location']['Address'][$type], $lat, $lon);
-                    }
-                }
-            }
+        if ($geounit->save()) {
+            return $geounit->id;
         }
+        \Yii::error(print_r($geounit->errors, 1) . ' ' . $type, 'geounits');
+        return false;
     }
 
     public function registerUnits($data, $type)
     {
-        static $types = ['Street' => 'District', 'District' => 'City', 'City' => 'County'];
-
-        $parent = $this->registerUnits($data, isset($types[$type])?$types[$type]:null);
+        static $types = ['HouseNumber' => 'District', 'Street' => 'District', 'District' => 'City', 'City' => 'County'];
+        $parentType = isset($types[$type])?$types[$type]:null;
         if (isset($data['Response']['View'][0]['Result'])) {
             $unit = $data['Response']['View'][0]['Result'][0];
-            $lat = $unit['Location']['DisplayPosition']['Latitude'];
-            $lon = $unit['Location']['DisplayPosition']['Longitude'];
-            $address = $unit['Location']['Address'];
-            if ($type === 'Street') {
-                $name = $address['Label'];
-            } else {
-                $name = $address[$type];
-            }
-
-            return $this->registerGeoUnit($name, $parent, $lat, $lon);
-
+        } else {
+            $unit = $data;
         }
-        return null;
+
+        $lat = $unit['Location']['DisplayPosition']['Latitude'];
+        $lon = $unit['Location']['DisplayPosition']['Longitude'];
+        $address = $unit['Location']['Address'];
+        $parentUnitName = isset($address[$parentType])?$address[$parentType]:null;
+        if ($parentType) {
+            $geoUnit = \Yii::$app->location->searchGeoUnit($parentUnitName, ['country' => 'BGR', $parentType => $parentUnitName]);
+            if (is_string($geoUnit)) {
+                $geoUnit = json_decode($geoUnit, JSON_UNESCAPED_UNICODE);
+            }
+            $parentId = $this->registerUnits($geoUnit, $parentType);
+        } else {
+            $parentId = null;
+        }
+
+        if (in_array($type, ['HouseNumber', 'Street'])) {
+            $name = $address['Label'];
+        } else {
+            $name = isset($address[$type])?$address[$type]:strtolower($unit['MatchLevel']);
+        }
+
+        return $this->registerGeoUnit($name, $parentId, $type, $lat, $lon);
     }
 }

@@ -13,17 +13,9 @@ class m190131_083326_add_location_fks extends Migration
     public function safeUp()
     {
         $this->addForeignKey(
-            'fk_user_data_geounit_province_id',
+            'fk_user_locations_data_geo_unit_id',
             'user_locations',
-            'province',
-            'geo_units',
-            'id'
-        );
-
-        $this->addForeignKey(
-            'fk_user_data_geounit_city_id',
-            'user_locations',
-            'city',
+            'address',
             'geo_units',
             'id'
         );

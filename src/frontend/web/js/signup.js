@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var typeaheadCallback = function(e, datum) {
-        var id = null, target = $(e.target);
+        var id = null;
         if (datum.data) {
             loading.show();
             $.ajax({
@@ -13,6 +13,7 @@ $(document).ready(function() {
             }).fail(function() {
                 loading.hide();
             });
+            leaflet.clear();
             var coords = datum.data.Location.DisplayPosition;
             leaflet.addMarker([coords.Latitude, coords.Longitude], datum.data.Location.Address.Label);
         } else {
