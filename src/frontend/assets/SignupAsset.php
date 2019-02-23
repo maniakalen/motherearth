@@ -15,9 +15,6 @@ class SignupAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $js = [
-        'js/signup.js'
-    ];
     public $css = [
         'css/signup.css'
     ];

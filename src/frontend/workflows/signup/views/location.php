@@ -11,7 +11,7 @@ use maniakalen\workflow\helpers\ActionsHelper;
 use yii\helpers\ArrayHelper;
 
 \frontend\assets\BloodhoundAsset::register($this);
-\frontend\assets\SignupAsset::register($this);
+\frontend\assets\LocationSignupAsset::register($this);
 \maniakalen\maps\assets\LeafletAsset::registerMapAsset($this, 'minimap', 'pk.eyJ1IjoibWFuaWFrYWxlbiIsImEiOiJjanI2ZjJnNWwwOHA2NDluamVrN3lhdG81In0.YASdNSL-lEnFojai4C96kw', [42.5814857, 25.4725568], 8, ['attribution' => 'MotherEarth signup']);
 \frontend\assets\LeafletSignupAsset::register($this);
 $this->title = 'Signup';

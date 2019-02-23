@@ -41,3 +41,7 @@
     width: 160px;
     padding: 10px 25px 10px 15px !important;
 }
+
+#products_list_container {
+    padding: 20px 25px;
+}

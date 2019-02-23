@@ -10,7 +10,7 @@ return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log', 'workflow'],
+    'bootstrap' => ['log', 'workflow', 'gii'],
     'modules' => [
 	    'workflow' => [
 		    'appTypes' => [\maniakalen\workflow\Module::ROUTES_APP_BACKEND]

@@ -22,6 +22,7 @@ class SignupForm extends Model
 	public $user_id;
 	public $address;
 	public $user_type;
+	public $product_ids;
 
     /**
      * {@inheritdoc}
@@ -48,7 +49,9 @@ class SignupForm extends Model
 	        ['details', 'string', 'on' => self::SCENARIO_GENERAL],
 
             ['user_id', 'integer', 'on' => [self::SCENARIO_LOCATION, self::SCENARIO_PRODUCTS]],
-            ['address', 'integer', 'on' => self::SCENARIO_LOCATION]
+            ['address', 'integer', 'on' => self::SCENARIO_LOCATION],
+
+            ['product_ids', 'each', 'rule' => ['integer'], 'on' => self::SCENARIO_PRODUCTS]
         ];
     }
 
@@ -100,5 +103,19 @@ class SignupForm extends Model
         }
 
         return null;
+    }
+
+    public function production()
+    {
+        $saved = true;
+        foreach ($this->product_ids as $pid) {
+            $userProducts = \Yii::createObject([
+                'class' => 'common\models\UserProducts',
+                'user_id' => $this->user_id,
+                'product_id' => $pid
+            ]);
+            $saved = $saved && $userProducts->save();
+        }
+        return $saved;
     }
 }
