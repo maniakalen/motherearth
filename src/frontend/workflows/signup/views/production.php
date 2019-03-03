@@ -13,7 +13,6 @@
     <div class="row content ">
         <div class="col-md-12 signup-form">
             <?php $form = \yii\widgets\ActiveForm::begin(['id' => 'form-signup', 'enableClientScript' => false]); ?>
-            <?php echo $form->field($model, 'user_id')->hiddenInput()->label(false); ?>
             <?php echo $form->field($model, 'product_ids[]')->hiddenInput(['id' => 'user_product_ids'])->label(false); ?>
             <div class="form-group">
                 <div class="col-md-6">
@@ -25,7 +24,17 @@
             </div>
             <div class="row px-2" id="products_list_container"></div>
             <br/>
-            <?php echo \yii\helpers\Html::submitButton('Register', ['class' => 'btn btn-primary']); ?>
+            <div class="form-group">
+                <?php try {
+                    echo \maniakalen\workflow\widgets\Actions::widget([
+                        'actions' => \maniakalen\workflow\helpers\ActionsHelper::fetchActions($step->id, 1),
+                        'translationCategory' => 'app'
+                    ]);
+                } catch (Exception $e) {
+                    echo "Due to some strange issue buttons cannot be rendered at the moment";
+                } ?>
+                <div style="clear:both;"></div>
+            </div>
             <br/><br/>
             <?php $form::end(); ?>
         </div>

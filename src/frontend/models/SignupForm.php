@@ -2,6 +2,7 @@
 namespace frontend\models;
 
 use common\models\UserAdditionalData;
+use http\Exception\InvalidArgumentException;
 use yii\base\Model;
 use common\models\User;
 
@@ -73,7 +74,57 @@ class SignupForm extends Model
         return null;
     }
 
+    private function keepInSession()
+    {
+        $attrs = $this->attributes;
+        \Yii::$app->session->set($this->scenario, serialize($attrs));
+    }
+
+    private function restoreFromSession()
+    {
+        $data = \Yii::$app->session->remove($this->scenario);
+        if ($data) {
+            $data = unserialize($data);
+            if ($this->load($data) && $this->validate()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function general()
+    {
+        $this->keepInSession();
+        return true;
+    }
+
+    public function location()
+    {
+        $this->keepInSession();
+        return true;
+    }
+
+    /**
+     *
+     */
+    public function production()
+    {
+        $this->scenario = self::SCENARIO_GENERAL;
+        if (!$this->restoreFromSession()) {
+            throw new InvalidArgumentException('Missing user data');
+        }
+        $user = $this->savePersonalData();
+        $this->scenario = self::SCENARIO_LOCATION;
+        $this->user_id = $user->id;
+        if (!$this->restoreFromSession()) {
+            throw new InvalidArgumentException('Missing user data');
+        }
+        $this->scenario = self::SCENARIO_PRODUCTS;
+        return $this->saveProductionData();
+
+    }
+    public function savePersonalData()
     {
         $user = \Yii::createObject(['class' => 'common\models\User']);
         $user->username = $this->username;
@@ -93,7 +144,7 @@ class SignupForm extends Model
         return null;
     }
 
-    public function location()
+    public function saveLocationData()
     {
         $location = \Yii::createObject(['class' => 'common\models\UserLocations']);
         $location->user_id = $this->user_id;
@@ -105,7 +156,7 @@ class SignupForm extends Model
         return null;
     }
 
-    public function production()
+    public function saveProductionData()
     {
         $saved = true;
         foreach ($this->product_ids as $pid) {

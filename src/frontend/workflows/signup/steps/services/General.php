@@ -46,7 +46,6 @@ class General extends SignupStepServiceAbstract implements SaveActionInterface
             $next = $this->step->nextStep;
             $workflow = $this->step->workflow;
             if ($next) {
-                \Yii::$app->session->addFlash($model->formName(), serialize(['user_id' => $user->id]));
                 return \Yii::$app->response->redirect([
                     'workflow/workflow/render',
                     'wf_url' => $workflow->url_route,

@@ -10,10 +10,11 @@ namespace frontend\workflows\signup\steps\services;
 
 
 use frontend\models\SignupForm;
-use maniakalen\workflow\interfaces\StepServiceInterface;
+use frontend\workflows\signup\interfaces\SaveActionInterface;
+use yii\base\InvalidArgumentException;
 use yii\base\View;
 
-class Production extends SignupStepServiceAbstract
+class Production extends SignupStepServiceAbstract implements SaveActionInterface
 {
     /**
      * @param array $get
@@ -23,19 +24,20 @@ class Production extends SignupStepServiceAbstract
      */
     public function render(View $view)
     {
+        $ss = \Yii::$app->session;
         $model = \Yii::createObject([
             'class' => SignupForm::className(),
             'scenario' => SignupForm::SCENARIO_PRODUCTS
         ]);
-        if (($data = \Yii::$app->session->removeFlash($model->formName()))) {
-            $model->load(unserialize($data[0]), '');
+
+        if (!$ss->has(SignupForm::SCENARIO_GENERAL) || !$ss->has(SignupForm::SCENARIO_LOCATION)) {
+            throw new InvalidArgumentException('Missing signup data');
         }
-        if (($data = \Yii::$app->session->removeFlash($model->formName() . '_errors'))) {
+
+        if (($data = $ss->removeFlash($model->formName() . '_errors'))) {
             $model->addErrors(unserialize($data[0]));
         }
-        if (!$model->user_id) {
-            //throw new BadRequestHttpException("Missing fundamental data");
-        }
+
         return $view->render($this->view, ['model' => $model, 'step' => $this->getStep()], $this);
     }
 

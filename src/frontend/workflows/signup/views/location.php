@@ -26,7 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <p>Please provide your exact location:</p>
             <?php $form = ActiveForm::begin(['id' => 'form-signup', 'enableClientScript' => false]); ?>
-            <?= $form->field($model, 'user_id')->hiddenInput(['id' => 'user_id'])->label(false); ?>
             <div class="col-md-12">
             <?= Html::input('text', 'address', null, ['label' => 'Адрес', 'class' => 'form-control typeahead typeahead-location', 'id' => 'address']) ?>
             <?= $form->field($model, 'address')->hiddenInput(['id' => 'address-input'])->label(false) ?>

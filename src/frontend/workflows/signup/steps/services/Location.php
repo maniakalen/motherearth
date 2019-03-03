@@ -12,6 +12,7 @@ namespace frontend\workflows\signup\steps\services;
 use common\models\GeoUnits;
 use frontend\models\SignupForm;
 use frontend\workflows\signup\interfaces\SaveActionInterface;
+use yii\base\InvalidArgumentException;
 use yii\base\View;
 use yii\web\BadRequestHttpException;
 
@@ -27,19 +28,19 @@ class Location extends SignupStepServiceAbstract implements SaveActionInterface
      */
     public function render(View $view)
     {
+        $ss = \Yii::$app->session;
         $model = \Yii::createObject([
             'class' => SignupForm::className(),
             'scenario' => SignupForm::SCENARIO_LOCATION
         ]);
-        if (($data = \Yii::$app->session->removeFlash($model->formName()))) {
-            $model->load(unserialize($data[0]), '');
+        if (!$ss->has(SignupForm::SCENARIO_GENERAL)) {
+            throw new InvalidArgumentException('Missing signup data');
         }
+
         if (($data = \Yii::$app->session->removeFlash($model->formName() . '_errors'))) {
             $model->addErrors(unserialize($data[0]));
         }
-        if (!$model->user_id) {
-            //throw new BadRequestHttpException("Missing fundamental data");
-        }
+
         return $view->render($this->view, ['model' => $model, 'step' => $this->getStep()], $this);
     }
     public function save()
@@ -53,7 +54,6 @@ class Location extends SignupStepServiceAbstract implements SaveActionInterface
             $next = $this->step->nextStep;
             $workflow = $this->step->workflow;
             if ($next) {
-                \Yii::$app->session->addFlash($model->formName(), serialize(['user_id' => $user->id]));
                 return \Yii::$app->response->redirect([
                     'workflow/workflow/render',
                     'wf_url' => $workflow->url_route,
@@ -69,5 +69,7 @@ class Location extends SignupStepServiceAbstract implements SaveActionInterface
             \Yii::$app->session->addFlash($model->formName() . '_errors', serialize($model->errors));
             return \Yii::$app->response->refresh();
         }
+
+        return null;
     }
 }
