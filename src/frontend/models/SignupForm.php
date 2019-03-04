@@ -116,12 +116,12 @@ class SignupForm extends Model
         }
         $user = $this->savePersonalData();
         $this->scenario = self::SCENARIO_LOCATION;
-        $this->user_id = $user->id;
         if (!$this->restoreFromSession()) {
             throw new InvalidArgumentException('Missing user data');
         }
         $this->scenario = self::SCENARIO_PRODUCTS;
-        if ($this->saveProductionData()) {
+        $this->user_id = $user->id;
+        if ($this->saveLocationData() && $this->saveProductionData()) {
             return $user;
         }
 

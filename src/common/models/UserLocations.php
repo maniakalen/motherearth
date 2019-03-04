@@ -49,10 +49,6 @@ class UserLocations extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'lat' => 'Lat',
-            'lon' => 'Lon',
-            'province' => 'Province',
-            'city' => 'City',
             'address' => 'Address',
         ];
     }
@@ -60,17 +56,9 @@ class UserLocations extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCity0()
+    public function getAddressData()
     {
-        return $this->hasOne(GeoUnits::className(), ['id' => 'city']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProvince0()
-    {
-        return $this->hasOne(GeoUnits::className(), ['id' => 'province']);
+        return $this->hasOne(GeoUnits::className(), ['id' => 'address']);
     }
 
     /**

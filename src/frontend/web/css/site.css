@@ -98,7 +98,7 @@ body {
 }
 
 .my-map-icon {
-    border-radius: 25px;
+    /*border-radius: 25px;*/
 }
 
 @media(max-height:767px) {

@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\User;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -12,6 +13,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -38,7 +40,7 @@ class SiteController extends Controller
 		                'roles' => []
 	                ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'users'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -76,8 +78,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (\Yii::$app->user->isGuest) {
+            $this->layout = 'index';
+            return $this->render('index');
+        }
+
     	$this->layout = 'index';
-        return $this->render('index');
+        return $this->render('map');
     }
 
     public function actionMap()
@@ -86,6 +93,29 @@ class SiteController extends Controller
         return $this->render('map');
     }
 
+    public function actionUsers()
+    {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $users = User::find()->where(['status' => User::STATUS_ACTIVE])->all();
+        $content = $this->renderPartial('/partials/popup');
+        $list = [];
+        foreach ($users as $user) {
+            $location = $user->location;
+            if (!$location) {
+                continue;
+            }
+            $location = $location->addressData;
+            if (!$location) {
+                continue;
+            }
+            $list[] = [
+                'id' => $user->id,
+                'coords' => [$location->lat, $location->lon],
+                'content' => trim($content)
+            ];
+        }
+        return $list;
+    }
     /**
      * Logs in a user.
      *

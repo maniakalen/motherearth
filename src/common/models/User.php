@@ -186,4 +186,19 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function getAdditionalData()
+    {
+        return $this->hasOne(UserAdditionalData::className(), ['user_id' => 'id']);
+    }
+
+    public function getLocation()
+    {
+        return $this->hasOne(UserLocations::className(), ['user_id' => 'id']);
+    }
+
+    public function getProducts()
+    {
+        return $this->hasMany(UserProducts::className(), ['user_id' => 'id']);
+    }
 }
