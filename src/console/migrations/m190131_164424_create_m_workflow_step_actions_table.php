@@ -20,6 +20,7 @@ class m190131_164424_create_m_workflow_step_actions_table extends Migration
                 [
                     ['1','1','1','','Continue','','1'],
                     ['2','2','1','','Continue','','1'],
+                    ['3','3','1','','Continue','','1'],
                 ]
             );
             $this->execute('SET FOREIGN_KEY_CHECKS = 1');

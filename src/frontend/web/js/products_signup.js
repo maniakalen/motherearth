@@ -1,22 +1,28 @@
 $(document).ready(function() {
     var typeaheadCallback = function(e, datum) {
         $('#add_product').data('product', datum);
+        $('#add_product').show();
     };
     $('#add_product').click(function() {
         if ($(this).data('product')) {
             var product = $(this).data('product');
-
-            var box = $('<div class="alert alert-info alert-dismissible col-md-2"><span class="content"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
-                '    <span aria-hidden="true">&times;</span>\n' +
-                '  </button></div>');
-            var clone = $('#user_product_ids').clone().removeAttr('id');
-            clone.val(product.id);
-            $('span.content', box).append(clone).append(product.value);
-            $('#products_list_container').append(box);
-
             $(this).data('product', null);
+            addProductToList(product);
+            $(this).hide();
+        } else {
+
         }
     });
+
+    window.addProductToList = function(product) {
+        var box = $('<div class="alert alert-info alert-dismissible col-md-2"><span class="content"></span><button type="button" class="close" data-dismiss="alert" aria-label="Close">\n' +
+            '    <span aria-hidden="true">&times;</span>\n' +
+            '  </button></div>');
+        var clone = $('#user_product_ids').clone().removeAttr('id');
+        clone.val(product.id);
+        $('span.content', box).append(clone).append(product.value);
+        $('#products_list_container').append(box);
+    };
     var products = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,

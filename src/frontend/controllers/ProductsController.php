@@ -32,9 +32,19 @@ class ProductsController extends Controller
                         'allow' => true,
                         'roles' => ['?'],
                     ],
+                    [
+                        'actions' => ['add'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
-            ]
-
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'add' => ['post'],
+                ],
+            ],
         ];
     }
 
@@ -46,5 +56,11 @@ class ProductsController extends Controller
             $list[] = ['id' => $product->id, 'value' => $product->name];
         }
         return $list;
+    }
+
+    public function actionAdd($name)
+    {
+        $product = \Yii::createObject(['class' => Products::className(), 'name' => $name]);
+        return $product->save();
     }
 }

@@ -85,7 +85,7 @@ class SignupForm extends Model
         $data = \Yii::$app->session->remove($this->scenario);
         if ($data) {
             $data = unserialize($data);
-            if ($this->load($data) && $this->validate()) {
+            if ($this->load($data, '') && $this->validate()) {
                 return true;
             }
         }
@@ -108,7 +108,7 @@ class SignupForm extends Model
     /**
      *
      */
-    public function production()
+    public function products()
     {
         $this->scenario = self::SCENARIO_GENERAL;
         if (!$this->restoreFromSession()) {
@@ -121,8 +121,11 @@ class SignupForm extends Model
             throw new InvalidArgumentException('Missing user data');
         }
         $this->scenario = self::SCENARIO_PRODUCTS;
-        return $this->saveProductionData();
+        if ($this->saveProductionData()) {
+            return $user;
+        }
 
+        return false;
     }
     public function savePersonalData()
     {

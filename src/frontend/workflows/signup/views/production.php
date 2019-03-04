@@ -19,7 +19,7 @@
             <?php echo \yii\helpers\Html::textInput('products', null, ['id' => 'products', 'class' => 'form-control']); ?>
                 </div>
                 <div class="col-md-6">
-                <?php echo \yii\helpers\Html::buttonInput('Add', ['id' => 'add_product', 'class' => 'btn btn-default']); ?>
+                <?php echo \yii\helpers\Html::buttonInput('Add', ['id' => 'add_product', 'class' => 'btn btn-default hidden']); ?>
                 </div>
             </div>
             <div class="row px-2" id="products_list_container"></div>
