@@ -464,11 +464,10 @@
     margin-bottom: 20px;
 }
 .leaflet-popup-content-wrapper {
-    padding: 1px;
     text-align: left;
     border-radius: 25px;
-    border: solid 3px;
-
+    border: none;
+    padding: 0;
 }
 .leaflet-popup-content {
     width: 100% !important;
@@ -634,4 +633,17 @@
     left: 0;
     margin-left: -12px;
     border-right-color: #fff;
+}
+
+.popup-content {
+    border-radius: 25px;
+    border: solid 3px;
+    overflow: hidden;
+}
+
+.producer {
+    border-color: #ff033d;
+}
+.consumer {
+    border-color: #00ace7;
 }

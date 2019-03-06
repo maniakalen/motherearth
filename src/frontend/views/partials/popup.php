@@ -7,6 +7,6 @@
  */
 ?>
 
-<div>
+<div class="popup-content <?php echo $type; ?>">
     <img class="my-map-icon" src="./img/profile-img.png" width="45" height="45" />
 </div>

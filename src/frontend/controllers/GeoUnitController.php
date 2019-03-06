@@ -78,7 +78,11 @@ class GeoUnitController extends Controller
             $data = $data['Response']['View'][0]['Result'];
             $list = [];
             foreach ($data as $k => $item) {
-                $list[] = ['id' => $k, 'value' => $item['Location']['Address']['Label'], 'data' => $item];
+                $list[] = [
+                    'id' => $k,
+                    'value' => $item['Location']['Address']['Label'],
+                    'data' => $item
+                ];
             }
 
             return $list;

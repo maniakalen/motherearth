@@ -6,13 +6,13 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+\frontend\assets\LoginAsset::register($this);
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-index">
     <div class="row content">
-        <div class="col-md-6">
+        <div class="col-md-6 login-form col-md-offset-3">
             <h2><?= Html::encode($this->title) ?></h2>
 
             <p>Please fill out the following fields to login:</p>

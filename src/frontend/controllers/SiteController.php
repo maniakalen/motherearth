@@ -4,6 +4,7 @@ namespace frontend\controllers;
 use common\models\User;
 use Yii;
 use yii\base\InvalidParamException;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -35,10 +36,15 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
 	                [
-	                    'actions' => ['index', 'map'],
+	                    'actions' => ['index'],
 		                'allow' => true,
-		                'roles' => []
+		                'roles' => ['?']
 	                ],
+                    [
+                        'actions' => ['map'],
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
                     [
                         'actions' => ['logout', 'users'],
                         'allow' => true,
@@ -78,18 +84,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if (\Yii::$app->user->isGuest) {
-            $this->layout = 'index';
-            return $this->render('index');
+        if (!\Yii::$app->user->isGuest) {
+            \Yii::$app->response->redirect(Url::to(['/site/map']));
         }
 
-    	$this->layout = 'index';
-        return $this->render('map');
+        $this->layout = 'index';
+        return $this->render('index');
     }
 
     public function actionMap()
     {
-    	\Yii::$app->location->getGeoUnitCoords('София');
+        $this->layout = 'index';
         return $this->render('map');
     }
 
@@ -97,7 +102,6 @@ class SiteController extends Controller
     {
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $users = User::find()->where(['status' => User::STATUS_ACTIVE])->all();
-        $content = $this->renderPartial('/partials/popup');
         $list = [];
         foreach ($users as $user) {
             $location = $user->location;
@@ -111,7 +115,7 @@ class SiteController extends Controller
             $list[] = [
                 'id' => $user->id,
                 'coords' => [$location->lat, $location->lon],
-                'content' => trim($content)
+                'content' => trim($this->renderPartial('/partials/popup', ['type' => $user->additionalData->user_type]))
             ];
         }
         return $list;

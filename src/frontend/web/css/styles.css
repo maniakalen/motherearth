@@ -1,0 +1,8 @@
+.header {
+    height: 45px;
+    background: #e4e79b;
+}
+
+.header .logout {
+    margin-right: 35px;
+}
