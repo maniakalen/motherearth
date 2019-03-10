@@ -7,4 +7,8 @@ $(document).ready(function() {
             });
         }
     });
+
+    $('body').on('click', '.popup-content', function() {
+        $('#sidebar').addClass('displayed');
+    });
 });

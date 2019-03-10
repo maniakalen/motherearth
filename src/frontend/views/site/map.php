@@ -8,5 +8,6 @@
 ?>
 <?php echo $this->render('/partials/header'); ?>
 <div class="body-content">
+    <div id="sidebar"></div>
     <div id="map"></div>
 </div>
