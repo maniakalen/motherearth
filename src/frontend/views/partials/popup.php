@@ -7,6 +7,6 @@
  */
 ?>
 
-<div class="popup-content <?php echo $type; ?>">
+<div class="popup-content <?php echo $type; ?>" data-user-id="<?php echo $user->id; ?>">
     <img class="my-map-icon" src="./img/profile-img.png" width="45" height="45" />
 </div>

@@ -36,17 +36,12 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
 	                [
-	                    'actions' => ['index'],
+	                    'actions' => ['index', 'map',  'users'],
 		                'allow' => true,
 		                'roles' => []
 	                ],
                     [
-                        'actions' => ['map'],
-                        'allow' => true,
-                        'roles' => ['@']
-                    ],
-                    [
-                        'actions' => ['logout', 'users'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -84,10 +79,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        if (!\Yii::$app->user->isGuest) {
-            \Yii::$app->response->redirect(Url::to(['/site/map']));
-        }
-
         $this->layout = 'index';
         return $this->render('index');
     }
@@ -115,7 +106,13 @@ class SiteController extends Controller
             $list[] = [
                 'id' => $user->id,
                 'coords' => [$location->lat, $location->lon],
-                'content' => trim($this->renderPartial('/partials/popup', ['type' => $user->additionalData->user_type]))
+                'content' => trim($this->renderPartial('/partials/popup', ['user' => $user, 'type' => $user->additionalData->user_type])),
+                'data' => [
+                    'name' => $user->username,
+                    'location' => $location->name,
+                    'photo' => 'img/profile-img.png',
+                    'type' => $user->additionalData->user_type
+                ]
             ];
         }
         return $list;
