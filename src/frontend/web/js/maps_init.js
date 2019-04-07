@@ -1,8 +1,8 @@
 $(document).ready(function() {
     window.users = null;
     $.get('/site/users.html', function(result) {
+        window.users = result;
         if (result instanceof Array) {
-            //window.users = result;
             $("body").trigger({
                 type: "leaflet.points.loaded",
                 points: result
@@ -27,13 +27,35 @@ $(document).ready(function() {
             item.data['id'] = item.id;
             $('ul#sidebar').append(Mustache.render(tpl, item.data));
         });
-    }).on('mouseover', 'li.list-group-item.user, li.list-group-item.user *', function(e) {
-        var target = $(e.target);
+    }).on('mouseover', 'li.user div.user-item', function(e) {
+        var target = $(e.target).closest('.user');
         var id = target.data('userId');
-        $('div.popup-content[data-user-id="' + id +'"]').addClass('active');
-    }).on('mouseout', 'li.list-group-item.user', function(e) {
-        var target = $(e.target);
+        var popup = $('div.popup-content[data-user-id="' + id +'"]');
+        popup.addClass('active');
+        popup.closest('.leaflet-popup').addClass('zindex2');
+    }).on('mouseout', 'li.user div.user-item', function(e) {
+        var target = $(e.target).closest('.user');
         var id = target.data('userId');
-        $('div.popup-content[data-user-id="' + id +'"]').removeClass('active');
+        var popup = $('div.popup-content[data-user-id="' + id +'"]');
+        popup.removeClass('active');
+        popup.closest('.leaflet-popup').removeClass('zindex2');
+    }).on('click', 'label.filter-checkbox-label', function() {
+        var results = [];
+        $('input.filter-checkbox:checked').each(function() {
+            var item = $(this);
+            results = results.concat(window.users.filter(function(v) {
+                return item.val() === v.data.type;
+            }));
+        });
+        if (results.length === 0) {
+            results = window.users;
+        }
+        $('ul#sidebar li:not(.filter-li)').remove();
+        leaflet.clear();
+
+        $("body").trigger({
+            type: "leaflet.points.loaded",
+            points: results
+        });
     });
 });

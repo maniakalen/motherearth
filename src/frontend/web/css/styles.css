@@ -1,8 +1,16 @@
 .header {
     height: 45px;
-    background: #e4e79b;
+    background: #7887fc;
 }
 
 .header .logout {
     margin-right: 35px;
+}
+
+.btn-link {
+    color: #fffefe;
+}
+
+.display-block {
+    display: block;
 }
