@@ -20,6 +20,8 @@ class m190129_091044_create_user_additional_data_table extends Migration
 	        'user_id' => $this->integer(),
 	        'user_type' => 'ENUM("producer", "consumer")',
 	        'phone' => $this->string(),
+	        'name' => $this->string(),
+	        'surname' => $this->string(),
 	        'details' => $this->text()
         ], $tableOptions);
 

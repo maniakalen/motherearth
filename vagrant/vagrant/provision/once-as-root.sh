@@ -41,7 +41,7 @@ apt-get update
 apt-get upgrade -y
 
 info "Install additional software"
-apt-get install -y git php libapache2-mod-php php-mcrypt php-mysql mysql-server-5.6 apache2
+apt-get install -y git php5 libapache2-mod-php5 php5-mcrypt php5-mysql php5-curl mysql-server-5.6 apache2
 php5enmod mcrypt apache2 unzip
 a2enmod rewrite
 

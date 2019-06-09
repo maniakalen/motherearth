@@ -10,6 +10,7 @@ namespace frontend\controllers;
 
 
 use common\models\Products;
+use common\models\UserProducts;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -30,10 +31,10 @@ class ProductsController extends Controller
                     [
                         'actions' => ['search'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => [],
                     ],
                     [
-                        'actions' => ['add'],
+                        'actions' => ['add', 'add-to-current-user', 'load-user-products'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -43,6 +44,7 @@ class ProductsController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'add' => ['post'],
+                    'add-to-current-user' => ['post'],
                 ],
             ],
         ];
@@ -58,9 +60,24 @@ class ProductsController extends Controller
         return $list;
     }
 
-    public function actionAdd($name)
+    public function actionAdd()
     {
-        $product = \Yii::createObject(['class' => Products::className(), 'name' => $name]);
-        return $product->save();
+        $post = \Yii::$app->request->post();
+        $product = \Yii::createObject(['class' => Products::className(), 'name' => $post['name']]);
+        return $product->save()?$product->id:0;
+    }
+
+    public function actionAddToCurrentUser()
+    {
+        $post = \Yii::$app->request->post();
+        $uid = \Yii::$app->user->id;
+
+        $userProduct = \Yii::createObject(['class' => UserProducts::className(), 'user_id' => $uid, 'product_id' => $post['pid']]);
+        return $userProduct->save()?$userProduct->id:0;
+    }
+
+    public function actionLoadUserProducts()
+    {
+        return $this->renderAjax('links_list', ['products' => ArrayHelper::map(\Yii::$app->user->identity->products, 'id', 'name')]);
     }
 }

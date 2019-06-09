@@ -31,7 +31,7 @@ class GeoUnitController extends Controller
                     [
                         'actions' => ['search-counties-list','search-cities-list', 'search-coords', 'register', 'search-unit', 'search-address'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => [],
                     ],
                 ],
             ],

@@ -30,7 +30,7 @@ class UserAdditionalData extends \yii\db\ActiveRecord
         return [
             [['user_id'], 'integer'],
             [['details'], 'string'],
-            [['phone'], 'string', 'max' => 255],
+            [['phone', 'name', 'surname'], 'string', 'max' => 255],
             [['user_type'], 'in', 'range' => ['producer', 'consumer']]
         ];
     }
@@ -44,6 +44,8 @@ class UserAdditionalData extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'phone' => 'Phone',
+            'name' => 'Name',
+            'surname' => 'Surname',
             'details' => 'Details',
             'user_type' => 'Type'
         ];

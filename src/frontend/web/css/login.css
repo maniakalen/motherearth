@@ -4,3 +4,37 @@
     border: solid #73fff0 1px;
     border-radius: 15px;
 }
+
+.profile .login-form {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.profile .login-form h2 {
+    text-align: center;
+}
+
+@media(min-width:1400px) {
+    .site-index .content.profile {
+        width: 1200px !important;
+        margin-left: -600px !important;
+    }
+
+    .site-index .content.profile #minimap {
+        width: 525px;
+        height: 350px;
+    }
+
+    .border-left {
+        border-left: solid lightgray 1px;
+    }
+
+    .products-block {
+        border-top: solid lightgray 1px;
+        padding-top: 15px;
+    }
+
+    .profile .login-form {
+        padding-bottom: 15px;
+    }
+}

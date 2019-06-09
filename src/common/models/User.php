@@ -197,8 +197,13 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasOne(UserLocations::className(), ['user_id' => 'id']);
     }
 
-    public function getProducts()
+    public function getUserProducts()
     {
         return $this->hasMany(UserProducts::className(), ['user_id' => 'id']);
+    }
+
+    public function getProducts()
+    {
+        return $this->hasMany(Products::className(), ['id' => 'product_id'])->via('userProducts')->where(['status' => 1]);
     }
 }

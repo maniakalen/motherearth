@@ -1,7 +1,8 @@
 $(document).ready(function() {
     var typeaheadCallback = function(e, datum) {
-        $('#add_product').data('product', datum);
-        $('#add_product').show();
+        $.post('/products/add-to-current-user.html', {"pid": datum.id}, function(data) {
+            $('body').trigger('load.user.products');
+        });
     };
     $('#add_product').click(function() {
         if ($(this).data('product')) {
@@ -38,7 +39,7 @@ $(document).ready(function() {
         limit: 25,
         source: products.ttAdapter(),
         templates: {
-            notFound: '<p>Не бяха открити резултати</p>'
+            notFound: '<p>Не бяха открити резултати <a class="btn btn-primary hidden" id="add-products">Добави като нов продукт</a></p></p>'
         }
     })
         .on("typeahead:select", typeaheadCallback)
