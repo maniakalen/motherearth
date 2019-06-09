@@ -13,5 +13,7 @@ class ProfileAsset extends AssetBundle
     public $js = [
         'js/profile.js'
     ];
-    public $depends = [];
+    public $depends = [
+        '\frontend\assets\StylesAsset'
+    ];
 }

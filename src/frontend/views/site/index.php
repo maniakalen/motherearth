@@ -5,6 +5,9 @@
  * Date: 22/01/2019
  * Time: 20:17
  */
+
+use yii\helpers\Url;
+
 ?>
 <div class="site-index">
     <div class="row content">
@@ -23,13 +26,13 @@
 
             </div>
             <div>
-                <a class="login btn btn-link" href="/site/login.html">Вход</a>
+                <a class="login btn btn-link" href="<?php echo Url::to(['site/login']); ?>">Вход</a>
             </div>
             <div>
-                <a class="sign-up btn btn-link" href="/signup/general.html">Регистрация</a>
+                <a class="sign-up btn btn-link" href="<?php echo Url::to(['signup/general']); ?>">Регистрация</a>
             </div>
             <div>
-                <a class="map btn btn-link" href="/site/map.html">Към картата</a>
+                <a class="map btn btn-link" href="<?php echo Url::to(['site/map']); ?>">Към картата</a>
             </div>
         </div>
     </div>

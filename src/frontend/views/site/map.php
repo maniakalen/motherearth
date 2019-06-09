@@ -9,37 +9,31 @@
 ?>
 <?php echo $this->render('/partials/header'); ?>
 <div class="body-content">
-    <ul id="sidebar" class="displayed list-group">
-        <li class="filter-li display-block">
-            <div class="filters">
-                <div class="checkbox-filter">
-                    <label class="filter-checkbox-label">
-                        <input type="checkbox" value="producer" name="usertype[]" class="filter-checkbox"><span class="btn btn-primary">Producer</span>
-                    </label>
-                </div>
-
-                <div class="checkbox-filter ">
-                    <label class="filter-checkbox-label">
-                        <input type="checkbox" value="consumer" name="usertype[]" class="filter-checkbox"><span class="btn btn-primary">Consumer</span>
-                    </label>
-                </div>
+    <div id="sidebar" class="list-group">
+        <div class="filter-li filters">
+            <div class="checkbox-filter">
+                <label class="filter-checkbox-label">
+                    <input type="checkbox" value="producer" name="usertype[]" class="filter-checkbox"><span class="btn btn-primary">Producer</span>
+                </label>
             </div>
-        </li>
-    </ul>
+
+            <div class="checkbox-filter ">
+                <label class="filter-checkbox-label">
+                    <input type="checkbox" value="consumer" name="usertype[]" class="filter-checkbox"><span class="btn btn-primary">Consumer</span>
+                </label>
+            </div>
+        </div>
+    </div>
     <div id="map"></div>
 </div>
 <script type="text/template" id="users">
-    <li class="user {{type}}" data-user-id="{{id}}">
-        <div class="user-item row">
-            <div class="user-data col-xs-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
-                <h4>{{name}}</h4>
-                <div class="location">
-                    {{location}}
-                </div>
-            </div>
-            <div class="user-photo col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-                <img src="{{photo}}" width="60" height="60" />
-            </div>
+    <a href="#" data-user-id="{{id}}" class="user {{type}} list-group-item list-group-item-action flex-column align-items-start">
+
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{name}}</h5>
+            <small>3 days ago</small>
         </div>
-    </li>
+        <p class="mb-1">{{location}}</p>
+        <small>{{details}}</small>
+    </a>
 </script>

@@ -25,8 +25,11 @@ $(document).ready(function() {
         var tpl = $('script#users').html();
         $.map(e.points, function(item) {
             item.data['id'] = item.id;
-            $('ul#sidebar').append(Mustache.render(tpl, item.data));
+            $('div#sidebar').append(Mustache.render(tpl, item.data));
         });
+        if (e.points.length > 0) {
+            $('div#sidebar').addClass('displayed');
+        }
     }).on('mouseover', 'li.user div.user-item', function(e) {
         var target = $(e.target).closest('.user');
         var id = target.data('userId');
@@ -50,7 +53,7 @@ $(document).ready(function() {
         if (results.length === 0) {
             results = window.users;
         }
-        $('ul#sidebar li:not(.filter-li)').remove();
+        $('div#sidebar > a').remove();
         leaflet.clear();
 
         $("body").trigger({

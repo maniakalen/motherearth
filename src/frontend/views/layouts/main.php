@@ -27,7 +27,7 @@ AppAsset::register($this);
 <body class="">
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<div class="wrap main">
     <?php
         //echo $this->render('/partials/header');
     ?>

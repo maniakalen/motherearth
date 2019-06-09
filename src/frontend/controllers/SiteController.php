@@ -41,7 +41,7 @@ class SiteController extends Controller
 		                'roles' => []
 	                ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'profile'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -111,7 +111,8 @@ class SiteController extends Controller
                     'name' => $user->username,
                     'location' => $location->name,
                     'photo' => 'img/profile-img.png',
-                    'type' => $user->additionalData->user_type
+                    'type' => $user->additionalData->user_type,
+                    'details' => $user->additionalData->details,
                 ]
             ];
         }
