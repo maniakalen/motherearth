@@ -44,7 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 } ?>
                 <div style="clear:both;"></div>
             </div>
-
+            <div class="with-profile">
+                <div class="with-profile-or">или</div>
+                Ако вече сте регистриран и искате да влезете в своя профил може да го направите <a href="<?php echo \yii\helpers\Url::to(['/site/login']); ?>" class="btn btn-link">Тук</a>
+            </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>

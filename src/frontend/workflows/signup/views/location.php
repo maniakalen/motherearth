@@ -40,7 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                 } catch (Exception $e) {
                     echo "Due to some strange issue buttons cannot be rendered at the moment";
-                } ?>
+                }
+
+                ?>
                 <div style="clear:both;"></div>
             </div>
 

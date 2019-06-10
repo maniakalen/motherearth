@@ -79,6 +79,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (!\Yii::$app->user->isGuest) {
+            \Yii::$app->response->redirect(Url::to(['site/map']));
+        }
         $this->layout = 'index';
         return $this->render('index');
     }

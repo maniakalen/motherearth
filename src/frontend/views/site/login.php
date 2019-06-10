@@ -33,7 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="form-group">
                     <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                 </div>
-
+                <div class="no-profile">
+                    <div class="no-profile-or">или</div>
+                    Ако все още нямате профил може да направите вашата регистрация <a href="<?php echo \yii\helpers\Url::to(['signup/general']); ?>" class="btn btn-link">Тук</a>
+                </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>

@@ -31,7 +31,7 @@ class GeoUnitsManager extends Component
 
     public function registerGeoUnit($name, $parent, $type, $lat, $lon)
     {
-        if ($unit = GeoUnits::find()->where(['name' => $name, 'parent_id' => $parent])->one()) {
+        if ($unit = GeoUnits::find()->where(['name' => $name, 'type' => $type])->one()) {
             return $unit->id;
         }
         $geounit = \Yii::createObject(GeoUnits::className());

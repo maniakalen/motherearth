@@ -38,7 +38,10 @@ class ProfileController extends Controller
     public function actionIndex()
     {
         $user = \Yii::$app->user->identity;
-
+        if ($post = \Yii::$app->request->post()) {
+            $user->load($post) && $user->save();
+            $user->additionalData->load($post) && $user->additionalData->save();
+        }
         return $this->render('edit', [
             'title' => $user->additionalData->name . '\'s profile',
             'user' => $user,

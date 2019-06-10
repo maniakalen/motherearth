@@ -45,3 +45,32 @@
 #products_list_container {
     padding: 20px 25px;
 }
+
+.with-profile-or {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.with-profile-or:before {
+    content: '';
+    border-bottom: solid #d5cccc 2px;
+    width: 130px;
+    height: 1px;
+    display: inline-block;
+    margin-top: 15px;
+    position: absolute;
+    left:15px;
+}
+
+.with-profile-or:after {
+    content: '';
+    border-bottom: solid #d5cccc 2px;
+    width: 130px;
+    height: 1px;
+    display: inline-block;
+    margin-top: 15px;
+    position: absolute;
+    right:15px;
+}

@@ -16,15 +16,15 @@ use yii\helpers\Html;
             <?php $form = \yii\widgets\ActiveForm::begin(); ?>
             <div class="col-md-6 row">
                 <div class="col-md-12">
-                    <?php echo $form->field($user, 'email')->label(false); ?>
-                    <?php echo $form->field($data, 'name')->label(false); ?>
-                    <?php echo $form->field($data, 'surname')->label(false); ?>
-                    <?php echo $form->field($data, 'phone')->label(false); ?>
-                    <?php echo $form->field($data, 'details')->textarea()->label(false); ?>
+                    <?php echo $form->field($user, 'email')->textInput(['placeholder' => 'email'])->label(false); ?>
+                    <?php echo $form->field($data, 'name')->textInput(['placeholder' => 'name'])->label(false); ?>
+                    <?php echo $form->field($data, 'surname')->textInput(['placeholder' => 'surname'])->label(false); ?>
+                    <?php echo $form->field($data, 'phone')->textInput(['placeholder' => 'phone'])->label(false); ?>
+                    <?php echo $form->field($data, 'details')->textInput(['placeholder' => 'details'])->textarea()->label(false); ?>
                 </div>
-                <div class="col-md-12 products-block row">
-                    <div class="col-md-12">
-                        <?php echo \yii\helpers\Html::textInput('products', null, ['id' => 'products', 'class' => 'form-control']); ?>
+                <div class="col-md-12 products-block row m-b-15p">
+                    <div class="col-md-12 m-b-15p">
+                        <?php echo \yii\helpers\Html::textInput('products', null, ['placeholder' => 'Add new produt', 'id' => 'products', 'class' => 'form-control']); ?>
                     </div>
                     <div class="col-md-12 row" id="products-list">
                     </div>
@@ -43,6 +43,9 @@ use yii\helpers\Html;
                 <div class="col-md-12">
 
                 </div>
+            </div>
+            <div class="col-md-12">
+                <?php echo Html::submitInput('Submit', ['class' => 'btn btn-primary']); ?>
             </div>
             <?php $form::end(); ?>
         </div>
