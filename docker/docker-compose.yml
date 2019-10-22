@@ -4,7 +4,7 @@ services:
     build: './server/'
     container_name: motherearth_server
     depends_on:
-      - db_me
+      - db_me_yii
     networks:
       - frontend
       - backend
@@ -15,22 +15,22 @@ services:
       - ./:/docker
     environment:
       APACHE_LOG_DIR: /docker/server/logs
-  db_me:
+  db_me_yii:
     image: mysql:5.6.40
-    container_name: motherearth_mysql
+    container_name: motherearth_mysql_yii
     networks:
       - backend
     environment:
       - TZ="Europe/Madrid"
       - MYSQL_ROOT_PASSWORD=alabala12
-      - MYSQL_DATABASE=motherearth
+      - MYSQL_DATABASE=motherearth_yii
       - MYSQL_USER=motherearth
       - MYSQL_PASSWORD=m0there4rth
     volumes:
-      - db_me:/var/lib/mysql
+      - db_me_yii:/var/lib/mysql/yii
 
 volumes:
-        db_me:
+        db_me_yii:
 
 networks:
   frontend:

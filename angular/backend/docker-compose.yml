@@ -1,0 +1,30 @@
+version: '2'
+services:
+  php:
+    image: yiisoftware/yii2-php:7.1-apache
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/app
+    ports:
+      - '80:80'
+    networks:
+      - frontend
+      - backend
+  mysql:
+    image: mysql:5.6.40
+    container_name: me_an_mysql
+    networks:
+      - backend
+    environment:
+      - TZ="Europe/Madrid"
+      - MYSQL_ROOT_PASSWORD=alabala12
+      - MYSQL_DATABASE=me
+      - MYSQL_USER=me
+      - MYSQL_PASSWORD=G3c02015
+    volumes:
+      - me_an_mysql:/var/lib/mysql/angularme
+volumes:
+  me_an_mysql:
+networks:
+  frontend:
+  backend:

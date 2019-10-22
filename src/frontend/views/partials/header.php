@@ -24,7 +24,7 @@ use yii\helpers\Url;
             </div>
             <div class="pull-right">
                 <div>
-                    <a href="<?php echo Url::to(['site/profile']); ?>" class="btn btn-link">Profile</a>
+                    <a href="<?php echo Url::to(['profile/index']); ?>" class="btn btn-link">Profile</a>
                 </div>
             </div>
         <?php endif ?>
